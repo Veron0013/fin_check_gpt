@@ -10,7 +10,7 @@
 			rel="stylesheet"
 		/>
 		<link rel="stylesheet" href="css/style.css" />
-		<link rel="script/script.ja
+		<script src="script/script.js"></script>
 		<title>My Fin App</title>
 	</head>
 	<body>
@@ -36,14 +36,16 @@
 
 						<input
 							type="text"
-							id="input-field"
-							name="input-field"
+							id="income-field"
+							name="income-field"
 							required
 							minlength="4"
 							maxlength="8"
 							size="10"
 						/>
-						<button id="button-income">Submit</button>
+						<button id="button-income" onclick="handleIncomeClick()">
+							Submit
+						</button>
 					</div>
 
 					<div class="cost-field-container">
@@ -58,7 +60,7 @@
 							maxlength="8"
 							size="10"
 						/>
-						<button id="button-cost">Submit</button>
+						<button id="button-cost" onclick="handleCostClick()">Submit</button>
 					</div>
 				</div>
 			</section>
