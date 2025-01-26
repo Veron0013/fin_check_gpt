@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="script/script.ja
+		<title>My Fin App</title>
+	</head>
+	<body>
+		<header class="header">
+			<ul>
+				<li><a href="#income">Income</a></li>
+				<li><a href="#costs"></a>Costs</li>
+				<li><a href="#transactions"></a>Transactions</li>
+				<li><a href="#statistic"></a>Statistic</li>
+			</ul>
+		</header>
+
+		<main>
+			<!-- summary -->
+			<section>
+				<p>Your balance: <span class="balance" id="balance"></span></p>
+			</section>
+			<!-- input income -->
+			<section>
+				<div id="income" class="income-input">
+					<div class="income-field-container">
+						<label for="income-field">Your Income</label>
+
+						<input
+							type="text"
+							id="input-field"
+							name="input-field"
+							required
+							minlength="4"
+							maxlength="8"
+							size="10"
+						/>
+						<button id="button-income">Submit</button>
+					</div>
+
+					<div class="cost-field-container">
+						<label for="cost-field">Your Costs</label>
+
+						<input
+							type="text"
+							id="cost-field"
+							name="cost-field"
+							required
+							minlength="4"
+							maxlength="8"
+							size="10"
+						/>
+						<button id="button-cost">Submit</button>
+					</div>
+				</div>
+			</section>
+		</main>
+	</body>
 </html>

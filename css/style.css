@@ -1,0 +1,25 @@
+body {
+	background: #a771a2;
+	padding: 40px;
+	font-family: "Montserrat", sans-serif;
+}
+
+ul {
+	display: flex;
+	flex-direction: row;
+	margin: 10px;
+}
+
+li {
+	margin: 4px 4px;
+	marker-start: none;
+}
+
+.income-input {
+	border-width: 2px;
+	border: 2px;
+	border-color: black;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	box-sizing: border-box;
+}
