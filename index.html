@@ -10,6 +10,7 @@
 			rel="stylesheet"
 		/>
 		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/datepicker.material.css" />
 		<title>My Fin App</title>
 	</head>
 	<body>
@@ -30,13 +31,14 @@
 			<!-- input income -->
 			<section>
 				<div id="income" class="income-input">
+					<input type="text" id="datepicker" />
 					<div class="income-field-container">
 						<label for="income-field">Стаття:</label>
 
 						<input
 							type="text"
-							id="income-field"
-							name="income-field"
+							id="input-art"
+							name="input-art"
 							required
 							minlength="4"
 							maxlength="8"
@@ -46,8 +48,8 @@
 
 						<input
 							type="text"
-							id="cost-field"
-							name="cost-field"
+							id="input-sum"
+							name="input-sum"
 							required
 							minlength="4"
 							maxlength="8"
@@ -74,6 +76,7 @@
 				</div>
 			</section>
 		</main>
+		<script src="script/datepicker.js"></script>
 		<script src="script/script.js"></script>
 	</body>
 </html>

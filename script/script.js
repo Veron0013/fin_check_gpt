@@ -2,6 +2,8 @@ var mIncome = [];
 var mCosts = [];
 let mTransactions = [];
 const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+var datepicker = new Datepicker('#datepicker');
 //let transactions = [
 //	{ id: 1, type: 'income', article: 'salary', amount: 100 },
 //	{ id: 2, type: 'expense', article: 'food', amount: 50 }
@@ -10,27 +12,32 @@ document.addEventListener("DOMContentLoaded", () => {
 	const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 	mTransactions = savedTransactions;
 	console.log("Завантажені транзакції:", mTransactions);
+	updateBalance(JSON.parse(localStorage.getItem("balance")));
 });
 
 function handleTransactionClick(type) {
-	const costFieldRaw = document.getElementById(type === "income" ? "income-field" : "cost-field").value;
+	const sumField = document.getElementById("input-sum");
+	const articleField = document.getElementById("input-art");
+	const dateField = document.getElementById("datepicker");
+
+	console.log(dateField.value);
+
+	//type === "income" ? "income-field" : "cost-field").value;
 	let balDash = 0;
 
 	const balanceField = document.getElementById("balance").textContent;
+
 	if (!isNaN(balanceField) && balanceField.trim() !== "") {
 		balDash = parseFloat(balanceField).toFixed(2);
 	}
 
-	if (/^-?\d+([.,]\d+)?$/.test(costFieldRaw)) {
-		const costField = parseFloat(costFieldRaw.replace(",", "."));
-		document.getElementById(type === "income" ? "income-field" : "cost-field").value = "";
+	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "") {
+		const costField = parseFloat(sumField.value.replace(",", "."));
 
-		const vArticle = prompt("Enter article");
-		if (vArticle == null || vArticle === "") {
-			return;
-		}
+		addTransaction(type, articleField.value.trim(), costField);
 
-		addTransaction(type, vArticle, costField);
+		sumField.value = "";
+		articleField.value = "";
 
 		localStorage.setItem("transactions", JSON.stringify(mTransactions));
 		balDash = (type === "income" ? balDash + costField : balDash - costField).toFixed(2);
