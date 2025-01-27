@@ -10,7 +10,6 @@
 			rel="stylesheet"
 		/>
 		<link rel="stylesheet" href="css/style.css" />
-		<script src="script/script.js"></script>
 		<title>My Fin App</title>
 	</head>
 	<body>
@@ -32,7 +31,7 @@
 			<section>
 				<div id="income" class="income-input">
 					<div class="income-field-container">
-						<label for="income-field">Your Income</label>
+						<label for="income-field">Стаття:</label>
 
 						<input
 							type="text"
@@ -43,13 +42,7 @@
 							maxlength="8"
 							size="10"
 						/>
-						<button id="button-income" onclick="handleIncomeClick()">
-							Submit
-						</button>
-					</div>
-
-					<div class="cost-field-container">
-						<label for="cost-field">Your Costs</label>
+						<label for="cost-field">Сума:</label>
 
 						<input
 							type="text"
@@ -60,10 +53,27 @@
 							maxlength="8"
 							size="10"
 						/>
-						<button id="button-cost" onclick="handleCostClick()">Submit</button>
+					</div>
+
+					<div class="button-container">
+						<button
+							class="submit-btn"
+							id="button-income"
+							onclick="handleTransactionClick('income')"
+						>
+							НАДХОДЖЕННЯ
+						</button>
+						<button
+							class="submit-btn"
+							id="button-cost"
+							onclick="handleTransactionClick('expense')"
+						>
+							ВИДАТОК
+						</button>
 					</div>
 				</div>
 			</section>
 		</main>
+		<script src="script/script.js"></script>
 	</body>
 </html>

@@ -1,4 +1,5 @@
 body {
+	max-width: 1200px;
 	background: #a771a2;
 	padding: 40px;
 	font-family: "Montserrat", sans-serif;
@@ -22,4 +23,13 @@ li {
 	padding-top: 12px;
 	padding-bottom: 12px;
 	box-sizing: border-box;
+}
+
+.submit-btn {
+	width: 50%;
+	height: 50px;
+	margin: 4px 4px;
+	font-size: 18px;
+	font-weight: 700;
+
 }
