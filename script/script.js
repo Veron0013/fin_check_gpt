@@ -8,8 +8,14 @@ var datepicker = new Datepicker('#datepicker');
 document.addEventListener("DOMContentLoaded", () => {
 	const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 	mTransactions = savedTransactions;
+
 	console.log("Завантажені транзакції:", mTransactions);
-	updateBalance(JSON.parse(localStorage.getItem("balance")));
+
+	if (mTransactions.length == 0) {
+		updateBalance(0);
+	} else {
+		updateBalance(JSON.parse(localStorage.getItem("balance")));
+	}
 	updateList();
 });
 
@@ -22,16 +28,16 @@ function updateList() {
 		var listItem = document.createElement('LI');
 		listItem.className = 'dash-list';
 		listItem.textContent = `${mTransactions[i].type.toUpperCase()} : ${mTransactions[i].article} - $${mTransactions[i].amount} `;
-		listItem.setAttribute("data-id", mTransactions[i].id);
+		listItem.setAttribute("data-id", i);
 		listItem.setAttribute("data-type", mTransactions[i].type.toUpperCase());
 		listItem.setAttribute("data-amount", mTransactions[i].amount);
-		listItem.onmouseover = function () {
 
+		listItem.onmouseover = function () {
 			this.style.backgroundColor = "#719FE5";
 			this.focus();
 		};
-		listItem.onmouseout = function () {
 
+		listItem.onmouseout = function () {
 			this.style.backgroundColor = "#a771a2";
 			this.focus();
 		};
@@ -41,9 +47,9 @@ function updateList() {
 			const transactionType = this.getAttribute("data-type");
 			const transactionAmount = this.getAttribute("data-amount");
 
-			let vDel = confirm(`Delete record with ID ${transactionId}?`);
+			let vDel = confirm(`Delete record:  ${this.textContent}?`);
 			if (vDel) {
-				deleteRecordFromBD(parseInt(transactionId) - 1, transactionType, parseFloat(transactionAmount));
+				deleteRecordFromBD(parseInt(transactionId), transactionType, parseFloat(transactionAmount));
 			}
 		};
 
@@ -62,11 +68,10 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 	}
 
 	console.log("Deleting record with ID:", list_id);
-	const index = mTransactions.findIndex(transaction => transaction.id === list_id);
 
-	if (index !== -1) {
-		console.log("Record found at index:", index);
-		mTransactions.splice(index, 1);
+	if (list_id >= 0) {
+		console.log("Record found at index:", list_id);
+		mTransactions.splice(list_id, 1);
 
 		addLocalStorageTransaction();
 		updateList();
@@ -88,7 +93,7 @@ function handleTransactionClick(type) {
 	const balanceField = document.getElementById("balance").textContent;
 
 	if (!isNaN(balanceField) && balanceField.trim() !== "") {
-		balDash = parseFloat(balanceField).toFixed(2);
+		balDash = parseFloat(balanceField);
 	}
 
 	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "") {
@@ -98,10 +103,14 @@ function handleTransactionClick(type) {
 
 		sumField.value = "";
 		articleField.value = "";
-		balDash = (type === "income" ? balDash + costField : balDash - costField).toFixed(2);
-		localStorage.setItem("balance", balDash);
 
-		document.getElementById("balance").textContent = balDash;
+		balDash = (type === "income" ? balDash + costField : balDash - costField).toFixed(2);
+
+		updateList();
+		updateBalance(balDash);
+		//localStorage.setItem("balance", balDash);
+
+		//document.getElementById("balance").textContent = balDash;
 
 		console.log("Новий баланс:", balDash);
 		console.log("transactions:", localStorage.getItem("transactions"));
@@ -111,7 +120,7 @@ function handleTransactionClick(type) {
 }
 
 function updateBalance(newBalance) {
-	document.getElementById("balance").textContent = newBalance.toFixed(2);
+	document.getElementById("balance").textContent = newBalance;
 	localStorage.setItem("balance", newBalance);
 }
 
