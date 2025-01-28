@@ -23,7 +23,7 @@ function updateList() {
 		listItem.className = 'dash-list';
 		listItem.textContent = `${mTransactions[i].type.toUpperCase()} : ${mTransactions[i].article} - $${mTransactions[i].amount} `;
 		listItem.setAttribute("data-id", mTransactions[i].id);
-		listItem.setAttribute("data-type", mTransactions[i].type);
+		listItem.setAttribute("data-type", mTransactions[i].type.toUpperCase());
 		listItem.setAttribute("data-amount", mTransactions[i].amount);
 		listItem.onmouseover = function () {
 
@@ -54,12 +54,15 @@ function updateList() {
 function deleteRecordFromBD(list_id, list_type, List_amount) {
 	const balanceValue = parseFloat(document.getElementById("balance").textContent);
 	let newBalanceValue = 0;
+
 	if (list_type == "INCOME") {
 		newBalanceValue = balanceValue - List_amount;
 	} else {
 		newBalanceValue = balanceValue + List_amount;
 	}
-	mTransactions.slice(list_id, list_id);
+
+	mTransactions.slice(list_id, 1);
+
 	console.log(list_id, list_type, List_amount);
 	console.log(mTransactions);
 
