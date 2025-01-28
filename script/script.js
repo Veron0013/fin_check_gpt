@@ -61,16 +61,20 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 		newBalanceValue = balanceValue + List_amount;
 	}
 
-	mTransactions.slice(list_id, 1);
+	console.log("Deleting record with ID:", list_id);
+	const index = mTransactions.findIndex(transaction => transaction.id === list_id);
 
-	console.log(list_id, list_type, List_amount);
-	console.log(mTransactions);
+	if (index !== -1) {
+		console.log("Record found at index:", index);
+		mTransactions.splice(index, 1);
 
-	addLocalStorageTransaction();
-	updateBalance(newBalanceValue);
-	updateList();
+		addLocalStorageTransaction();
+		updateList();
+		updateBalance(newBalanceValue);
+	} else {
+		console.warn("Record not found for ID:", list_id);
+	}
 }
-
 
 function handleTransactionClick(type) {
 	const sumField = document.getElementById("input-sum");
