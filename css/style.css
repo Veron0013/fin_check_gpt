@@ -1,8 +1,17 @@
+@font-face {
+	font-family: "Fin-site-font";
+	src: url('./europeext-webfont.woff2') format('woff2'),
+		url('europeext-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+
+}
+
 body {
 	max-width: 1200px;
 	background: #a771a2;
 	padding: 40px;
-	font-family: "Montserrat", sans-serif;
+	font-family: "Fin-site-font", "Montserrat", sans-serif;
 }
 
 ul {
@@ -20,7 +29,9 @@ ul {
 	font-size: 20px;
 }
 
-.dash-list {}
+.dash-list {
+	margin: 0;
+}
 
 li {
 	margin: 4px 4px;
