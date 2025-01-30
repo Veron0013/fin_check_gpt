@@ -1,7 +1,7 @@
 @font-face {
 	font-family: "Fin-site-font";
-	src: url('./europeext-webfont.woff2') format('woff2'),
-		url('europeext-webfont.woff') format('woff');
+	src: url('europeext-webfont.woff2') format('woff2'),
+		url('europeext-webfont.woff2') format('woff');
 	font-weight: normal;
 	font-style: normal;
 
@@ -9,6 +9,7 @@
 
 body {
 	max-width: 1200px;
+	margin: 0 auto;
 	background: #a771a2;
 	padding: 40px;
 	font-family: "Fin-site-font", "Montserrat", sans-serif;
@@ -17,7 +18,8 @@ body {
 ul {
 	display: flex;
 	flex-direction: row;
-	margin: 10px;
+	list-style: none;
+	gap: 24px;
 }
 
 .cost-list {
@@ -59,4 +61,51 @@ li {
 .income-field-container {
 	margin: 12px 2px;
 	font-size: 16px;
+}
+
+/* statistic */
+.statistic-sec {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.justify-end {
+	justify-content: flex-end !important;
+}
+
+.text-start {
+	text-align: left !important;
+}
+
+.text-end {
+	text-align: right !important;
+}
+
+.statistic-sec .list-item>div {
+	flex-grow: 1;
+}
+
+.statistic-sec .market-list-header {
+	font-weight: 700;
+	display: flex;
+	font-size: 16px;
+	padding: 12px 16px 6px;
+	position: relative;
+	width: 100%;
+}
+
+.statistic-sec .market-list-header .list-column {
+	align-items: center;
+	display: flex;
+	flex-grow: 1;
+}
+
+/* itn-list */
+.statistic-sec .list-item {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	padding: 0 16px;
+	position: relative;
+	width: 100%;
 }
