@@ -17,51 +17,71 @@
 		<header class="header">
 			<ul>
 				<li><a href="#income">Income</a></li>
-				<li><a href="#costs"></a>Costs</li>
-				<li><a href="#transactions"></a>Transactions</li>
-				<li><a href="#statistic"></a>Statistic</li>
+				<li><a href="#costs">Costs</a></li>
+				<li><a href="#transactions">Transactions</a></li>
+				<li><a href="#stat-table">Statistic</a></li>
 			</ul>
 		</header>
 
 		<main>
 			<!-- summary -->
-			<section>
+			<section class="balance-sec">
 				<h2>Balance info</h2>
-				<p>Your balance: <span class="balance" id="balance"></span></p>
+				<p>Your balance: <span class="balance" id="balance"></span> $</p>
 			</section>
 
 			<section>
 				<h2>DashBoard</h2>
 
-				<ul class="cost-list" id="cost-list"></ul>
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
+					doloribus alias vero. Voluptates, deleniti quo incidunt laboriosam
+					omnis illum, veritatis officiis facilis magnam cumque id doloremque
+					nobis quaerat quia neque ipsa excepturi pariatur voluptas eius atque
+					eveniet corporis facere ad sit. Velit, saepe facilis omnis nemo quasi
+					consectetur doloribus aut tenetur ducimus quidem distinctio commodi,
+					eum magnam officia, corrupti modi eveniet voluptatibus architecto ex?
+					Distinctio corporis beatae neque fugiat rem, aliquid aspernatur
+					deserunt fuga debitis temporibus alias expedita, exercitationem
+					suscipit saepe. Iure nostrum dolorem provident! Ad, repellat
+					explicabo. Culpa obcaecati eos deleniti, autem repellendus quae
+					repudiandae sapiente! Tempore nulla omnis odit neque. Provident cumque
+					maiores sequi dolorum tempore laborum commodi rerum obcaecati ad
+					aperiam ducimus amet mollitia dignissimos quo laudantium assumenda
+					illum eaque veniam perspiciatis reiciendis, similique quia! Vel odio
+					architecto, velit magnam laboriosam sed, corrupti eveniet doloremque
+					nobis quia earum saepe quod asperiores! Pariatur laborum fugit id
+					aspernatur saepe?
+				</p>
 			</section>
 			<!-- input income -->
 			<section>
 				<h2>Input data info</h2>
-				<div id="income" class="income-input">
-					<input type="text" id="datepicker" style="margin: 10px auto" />
-					<div class="income-field-container">
-						<label for="input-art">Стаття:</label>
-
+				<form class="income-form">
+					<div class="data-container">
 						<input
+							class="def-input"
 							type="text"
 							id="input-art"
 							name="input-art"
-							required
-							minlength="4"
-							maxlength="8"
-							size="10"
+							placeholder="Input article:"
 						/>
-						<label for="input-sum">Сума:</label>
-
+					</div>
+					<div class="data-container">
 						<input
+							class="def-input"
+							type="text"
+							name="datepicker"
+							id="datepicker"
+							placeholder="Input date:"
+						/>
+						<input
+							class="def-input"
 							type="text"
 							id="input-sum"
 							name="input-sum"
 							required
-							minlength="4"
-							maxlength="8"
-							size="10"
+							placeholder="Input amount:"
 						/>
 					</div>
 
@@ -71,65 +91,44 @@
 							id="button-income"
 							onclick="handleTransactionClick('income')"
 						>
-							НАДХОДЖЕННЯ
+							INCOMES
 						</button>
 						<button
 							class="submit-btn"
 							id="button-cost"
 							onclick="handleTransactionClick('expense')"
 						>
-							ВИДАТОК
+							EXPENSES
 						</button>
 					</div>
-				</div>
+				</form>
 			</section>
 
-			<section class="statistic-sec">
-				<div class="market-list-header">
-					<div class="list-column text-start dest">
-						<span class="truncate">Date</span>
-					</div>
-					<div class="list-column justify-end last">
-						<div class="content-inner truncate">
-							<span class="truncate">Article</span>
-						</div>
-					</div>
-					<div class="list-column justify-end last">
-						<div class="content-inner truncate">
-							<span class="truncate">Type</span>
-						</div>
-					</div>
-					<div class="list-column justify-end width-30 change">
-						<div class="content-inner truncate">
-							<span class="truncate">Amount</span>
-						</div>
-					</div>
-				</div>
+			<!-- statistic -->
+			<section class="statistic-sec" id="statistic-sec">
+				<h2>Statistic data</h2>
 
-				<div data-index="9" class="list-item active" style="height: 28px">
-					<div class="item-cell text-start dest">
-						<span class="ui0-text-quaternary flex items-center"
-							><div class="c-exchange-market-follow-icon">
-								<i class="iconfont icon-star active size-12"></i>
-							</div>
-							<span class="rtl:dir-ltr flex items-center ms-3"
-								><span class="ui0-text-primary">XRP</span
-								><span>/USDT</span></span
-							><span class="market-lever">5X</span></span
-						>
-					</div>
-					<div class="item-cell text-end last">
-						<div class="c-common-sub-num ui0-text-brand">
-							<div class="inline"><span>3.1198</span></div>
-						</div>
-					</div>
-					<div class="item-cell text-end width-30 change">
-						<span class="ui0-text-brand">2.44%</span>
-					</div>
-					<div class="item-cell text-end width-30 change">
-						<span class="ui0-text-brand">end test</span>
-					</div>
+				<p>
+					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo
+					adipisci fugit atque numquam. Iste doloremque sint dolore aperiam,
+					unde nisi corrupti! Debitis unde distinctio aut illum non asperiores
+					tempora tenetur!
+				</p>
+
+				<!--<div class="tab-container">-->
+				<div class="market-list-header" id="stat-table">
+					<div class="list-column text-start">Date</div>
+					<div class="list-column justify-end">Article</div>
+					<div class="list-column justify-end">Type</div>
+					<div class="list-column justify-end">Amount</div>
 				</div>
+				<div data-index="9" class="list-item active">
+					<div class="item-cell text-start">Date</div>
+					<div class="item-cell text-end">Article</div>
+					<div class="item-cell text-end">Type</div>
+					<div class="item-cell text-end">Amount</div>
+				</div>
+				<!--</div>-->
 			</section>
 		</main>
 		<script src="script/datepicker.js"></script>

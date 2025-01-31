@@ -20,42 +20,70 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateList() {
-	const listField = document.getElementById("cost-list");
-	listField.innerHTML = "";
+	const listField = document.getElementById("statistic-sec");
+
+	while (listField.children.length > 3) {
+		listField.removeChild(listField.lastChild);
+	}
 
 	for (let i = 0; i < mTransactions.length; i++) {
+		// Створюємо головний контейнер для рядка
+		var listDiv = document.createElement('div');
+		listDiv.className = 'list-item active';
+		listDiv.setAttribute("data-id", i);
+		listDiv.setAttribute("data-type", mTransactions[i].type.toUpperCase());
+		listDiv.setAttribute("data-amount", mTransactions[i].amount);
 
-		var listItem = document.createElement('LI');
-		listItem.className = 'dash-list';
-		listItem.textContent = `${mTransactions[i].type.toUpperCase()} : ${mTransactions[i].article} - $${mTransactions[i].amount} `;
-		listItem.setAttribute("data-id", i);
-		listItem.setAttribute("data-type", mTransactions[i].type.toUpperCase());
-		listItem.setAttribute("data-amount", mTransactions[i].amount);
+		// Створюємо комірки рядка
+		var listItem1 = document.createElement('div'); // Використовуємо document.createElement
+		listItem1.className = 'item-cell text-start';
+		listItem1.textContent = mTransactions[i].id; // Дата чи ID
+		listDiv.appendChild(listItem1); // Додаємо до головного контейнера
 
-		listItem.onmouseover = function () {
-			this.style.backgroundColor = "#719FE5";
-			this.focus();
+		var listItem2 = document.createElement('div');
+		listItem2.className = 'item-cell text-end';
+		listItem2.textContent = mTransactions[i].type.toUpperCase(); // Тип
+		listDiv.appendChild(listItem2);
+
+		var listItem3 = document.createElement('div');
+		listItem3.className = 'item-cell text-end';
+		listItem3.textContent = mTransactions[i].article; // Стаття
+		listDiv.appendChild(listItem3);
+
+		var listItem4 = document.createElement('div');
+		listItem4.className = 'item-cell text-end';
+		listItem4.textContent = `$${mTransactions[i].amount}`; // Сума
+		listDiv.appendChild(listItem4);
+
+		// Додаємо події
+		listDiv.onmouseover = function () {
+			this.style.fontWeight = "700";
+			this.style.textShadow = "2px 2px 4px 0.5";
+			this.style.cursor = "pointer";
 		};
 
-		listItem.onmouseout = function () {
-			this.style.backgroundColor = "#a771a2";
-			this.focus();
+		listDiv.onmouseout = function () {
+			this.style.fontWeight = "400";
+			this.style.textShadow = "0 0 0";
 		};
-		listItem.onclick = function () {
-			// Отримуємо ID з атрибуту
+
+		listDiv.onclick = function () {
+			// Отримуємо дані з атрибутів
 			const transactionId = this.getAttribute("data-id");
 			const transactionType = this.getAttribute("data-type");
 			const transactionAmount = this.getAttribute("data-amount");
 
-			let vDel = confirm(`Delete record:  ${this.textContent}?`);
+			let vDel = confirm(`Delete record: ${this.textContent}?`);
 			if (vDel) {
 				deleteRecordFromBD(parseInt(transactionId), transactionType, parseFloat(transactionAmount));
 			}
 		};
 
-		listField.appendChild(listItem);
+		// Додаємо контейнер до списку
+		listField.appendChild(listDiv);
 	}
 }
+
 
 function deleteRecordFromBD(list_id, list_type, List_amount) {
 	const balanceValue = parseFloat(document.getElementById("balance").textContent);
@@ -86,7 +114,7 @@ function handleTransactionClick(type) {
 	const articleField = document.getElementById("input-art");
 	const dateField = document.getElementById("datepicker");
 
-	console.log(dateField.value);
+	console.log(this);
 
 	let balDash = 0;
 

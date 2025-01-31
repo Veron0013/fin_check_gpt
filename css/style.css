@@ -15,11 +15,33 @@ body {
 	font-family: "Fin-site-font", "Montserrat", sans-serif;
 }
 
+section {
+	width: 80%;
+	margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+p {
+	text-align: center;
+}
+
 ul {
 	display: flex;
 	flex-direction: row;
 	list-style: none;
 	gap: 24px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	width: 95%;
+	justify-content: center;
+}
+
+header {
+	display: flex;
+	justify-content: center;
+
 }
 
 .cost-list {
@@ -40,6 +62,17 @@ li {
 	marker-start: none;
 }
 
+a {
+	text-decoration: none;
+	font-size: 18px;
+	color: #5a01a7;
+}
+
+.balance {
+	font-weight: 700;
+}
+
+/*
 .income-input {
 	border-width: 2px;
 	border: 2px;
@@ -47,26 +80,77 @@ li {
 	padding-top: 12px;
 	padding-bottom: 12px;
 	box-sizing: border-box;
+}*/
+
+.balance-sec {
+	box-sizing: border-box;
+	width: 80%;
+	justify-content: center;
 }
 
-.submit-btn {
-	width: 50%;
+.income-form {
+	margin: 0 auto;
+	padding: 0;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	box-sizing: border-box;
+	width: 80%;
+	justify-content: center;
+}
+
+.income-form .def-input {
+	font-size: 20px;
+	width: 95%;
+	margin: 12px;
+	padding: 4px;
+	border: 0px;
+	border-radius: 5px;
+	font-family: "Fin-site-font", "Montserrat", sans-serif;
+}
+
+/* button */
+.income-form .button-container {
+	display: flex;
+	justify-content: center;
+	margin: 4px;
+}
+
+.income-form .data-container {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
+}
+
+.income-form .button-container .submit-btn {
+	width: 45%;
 	height: 50px;
 	margin: 4px 4px;
 	font-size: 18px;
-	font-weight: 700;
+	border-radius: 15px;
+	border: 0;
+	font-family: "Fin-site-font", "Montserrat", sans-serif;
+}
 
+.submit-btn:hover {
+	font-weight: 700;
+	transition: 0.5s;
+}
+
+.submit-btn:active {
+	box-shadow: 0 0 0 6px #5a01a7;
 }
 
 .income-field-container {
+	border: 3px;
 	margin: 12px 2px;
 	font-size: 16px;
 }
 
 /* statistic */
 .statistic-sec {
-	max-width: 800px;
+	width: 80%;
 	margin: 0 auto;
+	position: relative;
 }
 
 .justify-end {
@@ -81,8 +165,10 @@ li {
 	text-align: right !important;
 }
 
-.statistic-sec .list-item>div {
-	flex-grow: 1;
+
+.statistic-sec .tab-container {
+	width: 90%;
+	position: relative;
 }
 
 .statistic-sec .market-list-header {
@@ -94,18 +180,45 @@ li {
 	width: 100%;
 }
 
-.statistic-sec .market-list-header .list-column {
+.statistic-sec .market-list-header .list-column,
+.statistic-sec .list-item .item-cell {
 	align-items: center;
 	display: flex;
 	flex-grow: 1;
 }
 
+.list-column .truncate {
+	cursor: pointer;
+}
+
 /* itn-list */
+
 .statistic-sec .list-item {
 	align-items: center;
-	cursor: pointer;
 	display: flex;
 	padding: 0 16px;
 	position: relative;
 	width: 100%;
+}
+
+/*
+.market-list {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.market-list-header,
+.list-item {
+	display: contents;
+}
+
+*/
+.market-list-header div,
+.list-item div {
+	padding: 8px;
+	text-align: center;
+	border: 1px solid #ddd;
+	min-width: 100px;
+	max-width: 245px;
+	width: 150px;
 }
