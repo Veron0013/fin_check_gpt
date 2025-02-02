@@ -1,5 +1,4 @@
-var mIncome = [];
-var mCosts = [];
+
 let mTransactions = [];
 const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
@@ -18,13 +17,22 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	updateList();
 
-	document.getElementById("date-col").addEventListener("click", mySort("date"));
-	document.getElementById("art-col").addEventListener("click", mySort("article"));
-	document.getElementById("amount-col").addEventListener("click", mySort("amount"));
+	document.getElementById("date-col").addEventListener("click", () => mySort("date"));
+	document.getElementById("art-col").addEventListener("click", () => mySort("article"));
+	document.getElementById("type-col").addEventListener("click", () => mySort("type"));
+	document.getElementById("amount-col").addEventListener("click", () => mySort("amount"));
 });
 
 function mySort(key) {
-	mTransactions.sort((a, b) => a[key] - b[key]);
+	mTransactions.sort((a, b) => {
+		if (typeof a[key] === "number" && typeof b[key] === "number") {
+			return a[key] - b[key];
+		}
+		if (typeof a[key] === "string" && typeof b[key] === "string") {
+			return a[key].localeCompare(b[key]);
+		}
+		return 0;
+	});
 	updateList();
 }
 
@@ -48,6 +56,10 @@ function updateList() {
 		listItem1.className = 'item-cell text-start';
 		listItem1.textContent = mTransactions[i].date; // Дата чи ID
 		listDiv.appendChild(listItem1); // Додаємо до головного контейнера
+
+		//console.log(new Date(mTransactions[i].date).toDateString);
+		//console.log(new Date(mTransactions[i].date));
+
 
 		var listItem2 = document.createElement('div');
 		listItem2.className = 'item-cell text-end';
@@ -121,8 +133,6 @@ function handleTransactionClick(type) {
 	const sumField = document.getElementById("input-sum");
 	const articleField = document.getElementById("input-art");
 	const dateField = document.getElementById("datepicker");
-
-	console.log(this);
 
 	let balDash = 0;
 
