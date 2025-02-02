@@ -183,7 +183,7 @@ function checkValidate(dateField, articleField, sumField) {
 		return false;
 	}
 
-	if (/^\s*$/.test(articleField.value)) {
+	if (/^\s*$/.test(articleField.value.trim())) {
 		console.log('articleField ', articleField.value.trim());
 		return false;
 	}
