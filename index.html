@@ -15,12 +15,14 @@
 	</head>
 	<body>
 		<header class="header">
-			<ul>
-				<li><a href="#income">Income</a></li>
-				<li><a href="#costs">Costs</a></li>
-				<li><a href="#transactions">Transactions</a></li>
-				<li><a href="#stat-table">Statistic</a></li>
-			</ul>
+			<nav>
+				<ul>
+					<li><a href="#income">Income</a></li>
+					<li><a href="#costs">Costs</a></li>
+					<li><a href="#transactions">Transactions</a></li>
+					<li><a href="#stat-table">Statistic</a></li>
+				</ul>
+			</nav>
 		</header>
 
 		<main>
@@ -80,7 +82,6 @@
 							type="text"
 							id="input-sum"
 							name="input-sum"
-							required
 							placeholder="Input amount:"
 						/>
 					</div>
@@ -117,10 +118,18 @@
 
 				<!--<div class="tab-container">-->
 				<div class="market-list-header" id="stat-table">
-					<div class="list-column text-start">Date</div>
-					<div class="list-column justify-end">Article</div>
-					<div class="list-column justify-end">Type</div>
-					<div class="list-column justify-end">Amount</div>
+					<div class="list-column text-start">
+						<span id="date-col">Date</span>
+					</div>
+					<div class="list-column justify-end">
+						<span id="art-col">Article</span>
+					</div>
+					<div class="list-column justify-end">
+						<span id="type-col">Type</span>
+					</div>
+					<div class="list-column justify-end">
+						<span id="amount-col">Amount</span>
+					</div>
 				</div>
 				<div data-index="9" class="list-item active">
 					<div class="item-cell text-start">Date</div>

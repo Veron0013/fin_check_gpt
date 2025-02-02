@@ -17,7 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		updateBalance(JSON.parse(localStorage.getItem("balance")));
 	}
 	updateList();
+
+	document.getElementById("date-col").addEventListener("click", mySort("date"));
+	document.getElementById("art-col").addEventListener("click", mySort("article"));
+	document.getElementById("amount-col").addEventListener("click", mySort("amount"));
 });
+
+function mySort(key) {
+	mTransactions.sort((a, b) => a[key] - b[key]);
+	updateList();
+}
 
 function updateList() {
 	const listField = document.getElementById("statistic-sec");
@@ -37,7 +46,7 @@ function updateList() {
 		// Створюємо комірки рядка
 		var listItem1 = document.createElement('div'); // Використовуємо document.createElement
 		listItem1.className = 'item-cell text-start';
-		listItem1.textContent = mTransactions[i].id; // Дата чи ID
+		listItem1.textContent = mTransactions[i].date; // Дата чи ID
 		listDiv.appendChild(listItem1); // Додаємо до головного контейнера
 
 		var listItem2 = document.createElement('div');
@@ -84,7 +93,6 @@ function updateList() {
 	}
 }
 
-
 function deleteRecordFromBD(list_id, list_type, List_amount) {
 	const balanceValue = parseFloat(document.getElementById("balance").textContent);
 	let newBalanceValue = 0;
@@ -124,10 +132,10 @@ function handleTransactionClick(type) {
 		balDash = parseFloat(balanceField);
 	}
 
-	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "") {
+	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "") {
 		const costField = parseFloat(sumField.value.replace(",", "."));
 
-		addTransaction(type, articleField.value.trim(), costField);
+		addTransaction(dateField.value.trim(), type, articleField.value.trim(), costField);
 
 		sumField.value = "";
 		articleField.value = "";
@@ -152,9 +160,10 @@ function updateBalance(newBalance) {
 	localStorage.setItem("balance", newBalance);
 }
 
-function addTransaction(type, article, amount) {
+function addTransaction(date, type, article, amount) {
 	const newTransaction = {
 		id: mTransactions.length,
+		date,
 		type,
 		article,
 		amount: parseFloat(amount),

@@ -136,6 +136,13 @@ a {
 	transition: 0.5s;
 }
 
+.market-list-header>div>span:hover {
+	font-weight: 900;
+	transition: 0.5s;
+	cursor: pointer;
+	color: red;
+}
+
 .submit-btn:active {
 	box-shadow: 0 0 0 6px #5a01a7;
 }
