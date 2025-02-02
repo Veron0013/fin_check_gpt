@@ -175,8 +175,6 @@ function handleTransactionClick(type) {
 }
 
 function checkValidate(dateField, articleField, sumField) {
-	let validated = true;
-
 	if (dateField.value.trim().length !== 10) {
 		console.log('date ', dateField.value.trim());
 
