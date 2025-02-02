@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	updateList();
 
-	document.getElementById("date-col").addEventListener("click", () => mySort("date"));
+	document.getElementById("date-col").addEventListener("click", () => mySort("longIntTime"));
 	document.getElementById("art-col").addEventListener("click", () => mySort("article"));
 	document.getElementById("type-col").addEventListener("click", () => mySort("type"));
 	document.getElementById("amount-col").addEventListener("click", () => mySort("amount"));
@@ -144,8 +144,9 @@ function handleTransactionClick(type) {
 
 	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "") {
 		const costField = parseFloat(sumField.value.replace(",", "."));
+		const longIntTime = datepicker.getDate().getTime();
 
-		addTransaction(dateField.value.trim(), type, articleField.value.trim(), costField);
+		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField);
 
 		sumField.value = "";
 		articleField.value = "";
@@ -170,9 +171,10 @@ function updateBalance(newBalance) {
 	localStorage.setItem("balance", newBalance);
 }
 
-function addTransaction(date, type, article, amount) {
+function addTransaction(date, longIntTime, type, article, amount) {
 	const newTransaction = {
 		id: mTransactions.length,
+		longIntTime,
 		date,
 		type,
 		article,
