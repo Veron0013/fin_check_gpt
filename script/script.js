@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("art-col").addEventListener("click", () => mySort("article"));
 	document.getElementById("type-col").addEventListener("click", () => mySort("type"));
 	document.getElementById("amount-col").addEventListener("click", () => mySort("amount"));
+
+	document.getElementById("button-income").addEventListener("click", () => handleTransactionClick("income"));
+	document.getElementById("button-cost").addEventListener("click", () => handleTransactionClick("expense"));
+
+
 });
 
 function mySort(key) {
@@ -142,7 +147,10 @@ function handleTransactionClick(type) {
 		balDash = parseFloat(balanceField);
 	}
 
-	if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "") {
+	const validated = checkValidate(dateField, articleField, sumField);
+
+	//if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "")
+	if (validated) {
 		const costField = parseFloat(sumField.value.replace(",", "."));
 		const longIntTime = datepicker.getDate().getTime();
 
@@ -164,6 +172,30 @@ function handleTransactionClick(type) {
 	} else {
 		alert("Помилка! Введено некоректний символ.");
 	}
+}
+
+function checkValidate(dateField, articleField, sumField) {
+	let validated = true;
+
+	if (dateField.value.trim().length !== 10) {
+		console.log('date ', dateField.value.trim());
+
+		return false;
+	}
+
+	if (/^\s*$/.test(articleField.value)) {
+		console.log('articleField ', articleField.value.trim());
+		return false;
+	}
+
+	if (/^-?\d+([.,]\d+)?$/.test(sumField.value)) {
+		console.log('sum ', sumField.value);
+		return true;
+	} else {
+		return false;
+	}
+
+	return true;
 }
 
 function updateBalance(newBalance) {
