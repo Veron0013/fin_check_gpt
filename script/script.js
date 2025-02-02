@@ -53,6 +53,7 @@ function updateList() {
 		var listDiv = document.createElement('div');
 		listDiv.className = 'list-item active';
 		listDiv.setAttribute("data-id", i);
+		listDiv.setAttribute("data-date", mTransactions[i].date.trim());
 		listDiv.setAttribute("data-type", mTransactions[i].type.toUpperCase());
 		listDiv.setAttribute("data-amount", mTransactions[i].amount);
 
@@ -99,7 +100,7 @@ function updateList() {
 			const transactionType = this.getAttribute("data-type");
 			const transactionAmount = this.getAttribute("data-amount");
 
-			let vDel = confirm(`Delete record: ${this.textContent}?`);
+			let vDel = confirm(`Видалити запис: ${this.getAttribute("data-date")} - ${transactionType} - $${transactionAmount}?`);
 			if (vDel) {
 				deleteRecordFromBD(parseInt(transactionId), transactionType, parseFloat(transactionAmount));
 			}
@@ -120,7 +121,7 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 		newBalanceValue = balanceValue + List_amount;
 	}
 
-	console.log("Deleting record with ID:", list_id);
+	console.log("Видалити запис: ", list_id);
 
 	if (list_id >= 0) {
 		console.log("Record found at index:", list_id);
