@@ -194,8 +194,6 @@ function checkValidate(dateField, articleField, sumField) {
 	} else {
 		return false;
 	}
-
-	return true;
 }
 
 function updateBalance(newBalance) {
