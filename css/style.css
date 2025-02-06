@@ -27,9 +27,7 @@ section {
 	margin: 0 auto;
 }
 
-h1,
 h2,
-h3,
 p {
 	text-align: center;
 }
@@ -56,19 +54,6 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
-
-.cost-list {
-	display: flex;
-	flex-direction: row;
-	margin: 10px;
-	display: block;
-	padding: 0;
-	/*font-size: 20px;*/
-}
-
-.dash-list {
-	margin: 0;
 }
 
 li {
@@ -173,12 +158,6 @@ a:hover {
 	box-shadow: 0 0 0 6px #5a01a7;
 }
 
-.income-field-container {
-	border: 3px;
-	margin: 12px 2px;
-	font-size: 16px;
-}
-
 /* statistic */
 .statistic-sec {
 	width: 100%;
@@ -198,13 +177,6 @@ a:hover {
 	text-align: right !important;
 }
 
-
-.statistic-sec .tab-container {
-	width: 100%;
-	position: relative;
-	overflow: hidden;
-}
-
 .statistic-sec .market-list-header {
 	font-weight: 700;
 	display: flex;
@@ -218,10 +190,6 @@ a:hover {
 	align-items: center;
 	display: flex;
 	flex-grow: 1;
-}
-
-.list-column .truncate {
-	cursor: pointer;
 }
 
 /* itn-list */
