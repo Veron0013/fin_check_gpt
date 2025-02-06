@@ -11,14 +11,19 @@ body {
 	max-width: 1200px;
 	margin: 0 auto;
 	background: #a771a2;
-	padding: 40px;
-	font-family: "Fin-site-font", "Montserrat", sans-serif;
+	padding: 0;
+	font-family: "Montserrat", sans-serif;
 	font-size: 14px;
 	color: #232323;
 }
 
+.wrapper {
+	width: 90%;
+	margin: 20px auto;
+}
+
 section {
-	width: 80%;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -30,22 +35,27 @@ p {
 }
 
 ul {
+	margin: 0;
+	padding: 12px 2px;
 	display: flex;
 	flex-direction: row;
 	list-style: none;
-	gap: 24px;
+	gap: 10%;
 	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 nav {
 	border-radius: 5px;
 	border: 1px solid #ddd;
-	width: 95%;
+	width: 100%;
 }
 
 header {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 }
 
 .cost-list {
@@ -100,18 +110,17 @@ a:hover {
 
 .income-form {
 	margin: 0 auto;
-	padding: 0;
+	padding: 8px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	box-sizing: border-box;
-	width: 80%;
+	width: 100%;
 	justify-content: center;
 }
 
 .income-form .def-input {
 	font-size: 20px;
-	width: 95%;
-	margin: 12px;
+	width: 100%;
 	padding: 4px;
 	border: 0px;
 	border-radius: 5px;
@@ -122,14 +131,18 @@ a:hover {
 .income-form .button-container {
 	display: flex;
 	justify-content: center;
-	margin: 4px;
+	gap: 2%
 }
 
 .income-form .data-container {
 	display: flex;
+	margin: 10px 0;
 	justify-content: center;
-	gap: 4px;
+	align-items: center;
+	width: 100%;
+	gap: 16px;
 }
+
 
 .income-form .button-container .submit-btn {
 	width: 45%;
@@ -168,7 +181,7 @@ a:hover {
 
 /* statistic */
 .statistic-sec {
-	width: 80%;
+	width: 100%;
 	margin: 0 auto;
 	position: relative;
 }
@@ -187,16 +200,16 @@ a:hover {
 
 
 .statistic-sec .tab-container {
-	width: 90%;
+	width: 100%;
 	position: relative;
+	overflow: hidden;
 }
 
 .statistic-sec .market-list-header {
 	font-weight: 700;
 	display: flex;
 	font-size: 16px;
-	padding: 12px 16px 6px;
-	position: relative;
+	padding: 0 0 6px;
 	width: 100%;
 }
 
@@ -216,7 +229,7 @@ a:hover {
 .statistic-sec .list-item {
 	align-items: center;
 	display: flex;
-	padding: 0 16px;
+	padding: 0;
 	position: relative;
 	width: 100%;
 }
@@ -235,10 +248,10 @@ a:hover {
 */
 .market-list-header div,
 .list-item div {
-	padding: 8px;
+	padding: 6px;
 	text-align: center;
 	border: 1px solid #ddd;
-	min-width: 70px;
+	min-width: 50px;
 	max-width: 245px;
 	width: 150px;
 }

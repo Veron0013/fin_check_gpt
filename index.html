@@ -1,138 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/datepicker.material.css" />
-		<title>My Fin App</title>
-	</head>
-	<body>
-		<header class="header">
-			<nav>
-				<ul>
-					<li><a href="#income">Income</a></li>
-					<li><a href="#costs">Costs</a></li>
-					<li><a href="#transactions">Transactions</a></li>
-					<li><a href="#stat-table">Statistic</a></li>
-				</ul>
-			</nav>
-		</header>
-
-		<main>
-			<!-- summary -->
-			<section class="balance-sec">
-				<h2>Balance info</h2>
-				<p>Your balance: <span class="balance" id="balance"></span> $</p>
-			</section>
-
-			<section>
-				<h2>DashBoard</h2>
-
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-					doloribus alias vero. Voluptates, deleniti quo incidunt laboriosam
-					omnis illum, veritatis officiis facilis magnam cumque id doloremque
-					nobis quaerat quia neque ipsa excepturi pariatur voluptas eius atque
-					eveniet corporis facere ad sit. Velit, saepe facilis omnis nemo quasi
-					consectetur doloribus aut tenetur ducimus quidem distinctio commodi,
-					eum magnam officia, corrupti modi eveniet voluptatibus architecto ex?
-					Distinctio corporis beatae neque fugiat rem, aliquid aspernatur
-					deserunt fuga debitis temporibus alias expedita, exercitationem
-					suscipit saepe. Iure nostrum dolorem provident! Ad, repellat
-					explicabo. Culpa obcaecati eos deleniti, autem repellendus quae
-					repudiandae sapiente! Tempore nulla omnis odit neque. Provident cumque
-					maiores sequi dolorum tempore laborum commodi rerum obcaecati ad
-					aperiam ducimus amet mollitia dignissimos quo laudantium assumenda
-					illum eaque veniam perspiciatis reiciendis, similique quia! Vel odio
-					architecto, velit magnam laboriosam sed, corrupti eveniet doloremque
-					nobis quia earum saepe quod asperiores! Pariatur laborum fugit id
-					aspernatur saepe?
-				</p>
-			</section>
-			<!-- input income -->
-			<section>
-				<h2>Input data info</h2>
-				<form class="income-form">
-					<div class="data-container">
-						<input
-							class="def-input"
-							type="text"
-							id="input-art"
-							name="input-art"
-							placeholder="Input article:"
-						/>
+	<div class="wrapper">
+		<head>
+			<meta charset="UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<link rel="preconnect" href="https://fonts.googleapis.com" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+			<link
+				href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+				rel="stylesheet"
+			/>
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/datepicker.material.css" />
+			<title>My Fin App</title>
+		</head>
+		<body>
+			<header class="header">
+				<nav>
+					<ul>
+						<li><a href="#income">Income</a></li>
+						<li><a href="#costs">Costs</a></li>
+						<li><a href="#transactions">Transactions</a></li>
+						<li><a href="#stat-table">Statistic</a></li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<!-- summary -->
+				<section class="balance-sec">
+					<h2>Balance info</h2>
+					<p>Your balance: <span class="balance" id="balance"></span> $</p>
+				</section>
+				<section>
+					<h2>DashBoard</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius doloribus alias vero. Voluptates, deleniti quo
+						incidunt laboriosam omnis illum, veritatis officiis facilis magnam cumque id doloremque nobis quaerat quia
+						neque ipsa excepturi pariatur voluptas eius atque eveniet corporis facere ad sit. Velit, saepe facilis omnis
+						nemo quasi consectetur doloribus aut tenetur ducimus quidem distinctio commodi, eum magnam officia, corrupti
+						modi eveniet voluptatibus architecto ex? Distinctio corporis beatae neque fugiat rem, aliquid aspernatur
+						deserunt fuga debitis temporibus alias expedita, exercitationem suscipit saepe. Iure nostrum dolorem
+						provident! Ad, repellat explicabo. Culpa obcaecati eos deleniti, autem repellendus quae repudiandae
+						sapiente! Tempore nulla omnis odit neque. Provident cumque maiores sequi dolorum tempore laborum commodi
+						rerum obcaecati ad aperiam ducimus amet mollitia dignissimos quo laudantium assumenda illum eaque veniam
+						perspiciatis reiciendis, similique quia! Vel odio architecto, velit magnam laboriosam sed, corrupti eveniet
+						doloremque nobis quia earum saepe quod asperiores! Pariatur laborum fugit id aspernatur saepe?
+					</p>
+				</section>
+				<!-- input income -->
+				<section>
+					<h2>Input data info</h2>
+					<form class="income-form">
+						<div class="data-container">
+							<input class="def-input" type="text" id="input-art" name="input-art" placeholder="Input article:" />
+						</div>
+						<div class="data-container double">
+							<input class="def-input" type="text" name="datepicker" id="datepicker" placeholder="Input date:" />
+							<input class="def-input" type="text" id="input-sum" name="input-sum" placeholder="Input amount:" />
+						</div>
+						<div class="button-container">
+							<button type="button" class="submit-btn" id="button-income">INCOMES</button>
+							<button type="button" class="submit-btn" id="button-cost">EXPENSES</button>
+						</div>
+					</form>
+				</section>
+				<!-- statistic -->
+				<section class="statistic-sec" id="statistic-sec">
+					<h2>Statistic data</h2>
+					<p>
+						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo adipisci fugit atque numquam. Iste doloremque
+						sint dolore aperiam, unde nisi corrupti! Debitis unde distinctio aut illum non asperiores tempora tenetur!
+					</p>
+					<!--<div class="tab-container">-->
+					<div class="market-list-header" id="stat-table">
+						<div class="list-column text-start">
+							<span id="date-col">Date</span>
+						</div>
+						<div class="list-column justify-end">
+							<span id="type-col">Type</span>
+						</div>
+						<div class="list-column justify-end">
+							<span id="art-col">Article</span>
+						</div>
+						<div class="list-column justify-end">
+							<span id="amount-col">Amount</span>
+						</div>
 					</div>
-					<div class="data-container">
-						<input
-							class="def-input"
-							type="text"
-							name="datepicker"
-							id="datepicker"
-							placeholder="Input date:"
-						/>
-						<input
-							class="def-input"
-							type="text"
-							id="input-sum"
-							name="input-sum"
-							placeholder="Input amount:"
-						/>
+					<div data-index="9" class="list-item active">
+						<div class="item-cell text-start">Date</div>
+						<div class="item-cell text-end">Article</div>
+						<div class="item-cell text-end">Type</div>
+						<div class="item-cell text-end">Amount</div>
 					</div>
-
-					<div class="button-container">
-						<button type="button" class="submit-btn" id="button-income">
-							INCOMES
-						</button>
-						<button type="button" class="submit-btn" id="button-cost">
-							EXPENSES
-						</button>
-					</div>
-				</form>
-			</section>
-
-			<!-- statistic -->
-			<section class="statistic-sec" id="statistic-sec">
-				<h2>Statistic data</h2>
-
-				<p>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo
-					adipisci fugit atque numquam. Iste doloremque sint dolore aperiam,
-					unde nisi corrupti! Debitis unde distinctio aut illum non asperiores
-					tempora tenetur!
-				</p>
-
-				<!--<div class="tab-container">-->
-				<div class="market-list-header" id="stat-table">
-					<div class="list-column text-start">
-						<span id="date-col">Date</span>
-					</div>
-					<div class="list-column justify-end">
-						<span id="type-col">Type</span>
-					</div>
-					<div class="list-column justify-end">
-						<span id="art-col">Article</span>
-					</div>
-					<div class="list-column justify-end">
-						<span id="amount-col">Amount</span>
-					</div>
-				</div>
-				<div data-index="9" class="list-item active">
-					<div class="item-cell text-start">Date</div>
-					<div class="item-cell text-end">Article</div>
-					<div class="item-cell text-end">Type</div>
-					<div class="item-cell text-end">Amount</div>
-				</div>
-				<!--</div>-->
-			</section>
-		</main>
-		<script src="script/datepicker.js"></script>
-		<script src="script/script.js"></script>
-	</body>
+					<!--</div>-->
+				</section>
+			</main>
+			<script src="script/datepicker.js"></script>
+			<script src="script/script.js"></script>
+		</body>
+	</div>
 </html>
