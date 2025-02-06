@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 	mTransactions = savedTransactions;
 
-	console.log("Завантажені транзакції:", mTransactions);
+	//console.log("Завантажені транзакції:", mTransactions);
 
 	if (mTransactions.length == 0) {
 		updateBalance(0);
@@ -121,10 +121,10 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 		newBalanceValue = balanceValue + List_amount;
 	}
 
-	console.log("Видалити запис: ", list_id);
+	//console.log("Видалити запис: ", list_id);
 
 	if (list_id >= 0) {
-		console.log("Record found at index:", list_id);
+		//console.log("Record found at index:", list_id);
 		mTransactions.splice(list_id, 1);
 
 		addLocalStorageTransaction();
@@ -168,8 +168,8 @@ function handleTransactionClick(type) {
 
 		//document.getElementById("balance").textContent = balDash;
 
-		console.log("Новий баланс:", balDash);
-		console.log("transactions:", localStorage.getItem("transactions"));
+		//console.log("Новий баланс:", balDash);
+		//console.log("transactions:", localStorage.getItem("transactions"));
 	} else {
 		alert("Помилка! Введено некоректний символ.");
 	}
@@ -177,18 +177,17 @@ function handleTransactionClick(type) {
 
 function checkValidate(dateField, articleField, sumField) {
 	if (dateField.value.trim().length !== 10) {
-		console.log('date ', dateField.value.trim());
-
+		//console.log('date ', dateField.value.trim());
 		return false;
 	}
 
 	if (/^\s*$/.test(articleField.value.trim())) {
-		console.log('articleField ', articleField.value.trim());
+		//console.log('articleField ', articleField.value.trim());
 		return false;
 	}
 
 	if (/^-?\d+([.,]\d+)?$/.test(sumField.value)) {
-		console.log('sum ', sumField.value);
+		//console.log('sum ', sumField.value);
 		return true;
 	} else {
 		return false;
@@ -214,8 +213,8 @@ function addTransaction(date, longIntTime, type, article, amount) {
 
 	addLocalStorageTransaction();
 
-	console.log("Додано транзакцію:", newTransaction);
-	console.log("Оновлений масив транзакцій:", mTransactions);
+	//console.log("Додано транзакцію:", newTransaction);
+	//console.log("Оновлений масив транзакцій:", mTransactions);
 }
 
 function addLocalStorageTransaction() {
