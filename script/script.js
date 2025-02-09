@@ -25,8 +25,28 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("button-income").addEventListener("click", () => handleTransactionClick("income"));
 	document.getElementById("button-cost").addEventListener("click", () => handleTransactionClick("expense"));
 
+	document.getElementById("theme-switch").addEventListener("click", () => changeThemeStyle());
+
+	const savedTheme = localStorage.getItem("theme");
+	if (savedTheme === "dark") {
+		document.body.classList.add("dark-theme");
+	}
 
 });
+
+function changeThemeStyle() {
+	document.body.classList.toggle("dark-theme");
+	let img_field = document.getElementById("theme-switch");
+	if (document.body.classList.contains("dark-theme")) {
+		localStorage.setItem("theme", "dark");
+		img_field.setAttribute("src", "./img/sun-regular.svg");
+		img_field.setAttribute("alt", "Light theme");
+	} else {
+		localStorage.setItem("theme", "light");
+		img_field.setAttribute("src", "./img/moon-solid.svg");
+		img_field.setAttribute("alt", "Dark theme");
+	}
+}
 
 function mySort(key) {
 	mTransactions.sort((a, b) => {
