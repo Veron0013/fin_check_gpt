@@ -70,15 +70,17 @@ function updateList() {
 
 	for (let i = 0; i < mTransactions.length; i++) {
 		// Створюємо головний контейнер для рядка
-		var listDiv = document.createElement('div');
+		let listDiv = document.createElement('div');
+		let typeTrans = mTransactions[i].type.toUpperCase().trim();
+
 		listDiv.className = 'list-item active';
 		listDiv.setAttribute("data-id", i);
 		listDiv.setAttribute("data-date", mTransactions[i].date.trim());
-		listDiv.setAttribute("data-type", mTransactions[i].type.toUpperCase());
+		listDiv.setAttribute("data-type", typeTrans);
 		listDiv.setAttribute("data-amount", mTransactions[i].amount);
 
 		// Створюємо комірки рядка
-		var listItem1 = document.createElement('div'); // Використовуємо document.createElement
+		let listItem1 = document.createElement('div'); // Використовуємо document.createElement
 		listItem1.className = 'item-cell text-start';
 		listItem1.textContent = mTransactions[i].date; // Дата чи ID
 		listDiv.appendChild(listItem1); // Додаємо до головного контейнера
@@ -87,19 +89,28 @@ function updateList() {
 		//console.log(new Date(mTransactions[i].date));
 
 
-		var listItem2 = document.createElement('div');
+		let listItem2 = document.createElement('div');
 		listItem2.className = 'item-cell text-end';
 		listItem2.textContent = mTransactions[i].type.toUpperCase(); // Тип
 		listDiv.appendChild(listItem2);
 
-		var listItem3 = document.createElement('div');
+		let listItem3 = document.createElement('div');
 		listItem3.className = 'item-cell text-end';
 		listItem3.textContent = mTransactions[i].article; // Стаття
 		listDiv.appendChild(listItem3);
 
-		var listItem4 = document.createElement('div');
+		let listItem4 = document.createElement('div');
 		listItem4.className = 'item-cell text-end';
 		listItem4.textContent = `$${mTransactions[i].amount}`; // Сума
+
+		if (typeTrans == "EXPENSE") {
+			listItem4.classList.add('expenses-bg');
+			//listItem4.classList.remove('income-bg');
+		} else {
+			listItem4.classList.add('income-bg');
+			//listItem4.classList.remove('expenses-bg');
+		}
+
 		listDiv.appendChild(listItem4);
 
 		// Додаємо події

@@ -21,11 +21,22 @@
 
 /*--accent-color: #6200ea;*/
 :root {
-	--bg-color: #eceff4;
+	--bg-color: #dee1e7;
 	--text-color: #2e3440;
 	--accent-color: #5e81ac;
 	--hover-color: #b2ccec;
 	--form-color: #c9d2dd;
+
+	--income-color: rgb(54, 128, 70);
+	--expense-color: rgb(151, 99, 78);
+}
+
+.income-bg {
+	color: var(--income-color);
+}
+
+.expenses-bg {
+	color: var(--expense-color);
 }
 
 .dark-theme {
@@ -34,6 +45,9 @@
 	--accent-color: #757575;
 	--hover-color: #b2ccec;
 	--form-color: #e0e0e0;
+
+	--income-color: rgba(106, 250, 137, 0.6);
+	--expense-color: rgba(252, 161, 125, 0.6);
 }
 
 body {
@@ -44,7 +58,6 @@ body {
 	font-family: "Montserrat", sans-serif;
 	font-size: 14px;
 	color: var(--text-color);
-	;
 }
 
 .wrapper {
