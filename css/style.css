@@ -59,6 +59,15 @@ body {
 	font-size: 14px;
 	color: var(--text-color);
 	transition: background-color 0.3s ease;
+
+	-webkit-user-select: none;
+	/* Для WebKit-браузерів (Chrome, Safari, etc.) */
+	-moz-user-select: none;
+	/* Для Firefox */
+	-ms-user-select: none;
+	/* Для IE/Edge */
+	user-select: none;
+	/* Стандартне значення для підтримуваних браузерів */
 }
 
 .wrapper {
