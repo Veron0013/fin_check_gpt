@@ -1,6 +1,9 @@
 
 let mTransactions = [];
 const savedTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+let isLongTap = false;
+var contextMenu = document.getElementById('context-menu');
+//console.log(contextMenu);
 
 var datepicker = new Datepicker('#datepicker');
 
@@ -31,6 +34,34 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (savedTheme === "dark") {
 		document.body.classList.add("dark-theme");
 	}
+
+	//menu
+	document.getElementById('edit').addEventListener('click', function () {
+		const selectedId = document.getElementById('context-menu').getAttribute('data-selected-id');
+		editTransaction(selectedId);
+		closeContextMenu();
+	});
+
+	document.getElementById('delete').addEventListener('click', function (event) {
+		const selectedId = document.getElementById('context-menu').getAttribute('data-selected-id');
+		const selectedType = document.getElementById('context-menu').getAttribute('data-type-ctx');
+		const selectedAmount = document.getElementById('context-menu').getAttribute('data-amount-ctx');
+
+		// Викликаємо simpleConfirm з повідомленням
+		simpleConfirm(event, 'Ви дійсно хочете видалити цю транзакцію?', function (confirmed) {
+			if (confirmed) {
+				//console.log(selectedId, selectedType, selectedAmount);
+				deleteRecordFromBD(selectedId, selectedType, parseFloat(selectedAmount));  // Видалення при підтвердженні
+			}
+			closeContextMenu();  // Закриття контекстного меню в будь-якому випадку
+		});
+	});
+
+	document.getElementById('cancel').addEventListener('click', closeContextMenu);
+
+	document.querySelectorAll('.list-item').forEach(item => {
+		item.addEventListener('contextmenu', (e) => showContextMenu(e, item));
+	});
 
 });
 
@@ -79,6 +110,11 @@ function updateList() {
 		listDiv.setAttribute("data-type", typeTrans);
 		listDiv.setAttribute("data-amount", mTransactions[i].amount);
 
+		addLongPressListener(listDiv, contextMenu);
+
+		// Додаємо елемент на сторінку
+		//document.querySelector('#transactions-container').appendChild(listDiv);
+
 		// Створюємо комірки рядка
 		let listItem1 = document.createElement('div'); // Використовуємо document.createElement
 		listItem1.className = 'item-cell text-start';
@@ -125,21 +161,78 @@ function updateList() {
 			this.style.textShadow = "0 0 0";
 		};
 
-		listDiv.onclick = function () {
-			// Отримуємо дані з атрибутів
-			const transactionId = this.getAttribute("data-id");
-			const transactionType = this.getAttribute("data-type");
-			const transactionAmount = this.getAttribute("data-amount");
 
-			let vDel = confirm(`Видалити запис: ${this.getAttribute("data-date")} - ${transactionType} - $${transactionAmount}?`);
-			if (vDel) {
-				deleteRecordFromBD(parseInt(transactionId), transactionType, parseFloat(transactionAmount));
-			}
-		};
+		//listDiv.onclick = function () {
+		//	// Отримуємо дані з атрибутів
+		//	const transactionId = this.getAttribute("data-id");
+		//	const transactionType = this.getAttribute("data-type");
+		//	const transactionAmount = this.getAttribute("data-amount");
+
+		//	let vDel = confirm(`Видалити запис: ${this.getAttribute("data-date")} - ${transactionType} - $${transactionAmount}?`);
+		//	if (vDel) {
+		//		deleteRecordFromBD(parseInt(transactionId), transactionType, parseFloat(transactionAmount));
+		//	}
+		//};
+
 
 		// Додаємо контейнер до списку
 		listField.appendChild(listDiv);
 	}
+}
+
+function simpleConfirm(event, message, onConfirm) {
+
+	closeContextMenu();
+	// Отримуємо кольори з CSS змінних
+	const rootStyles = getComputedStyle(document.documentElement);
+	const bgColor = rootStyles.getPropertyValue('--bg-color').trim();
+	const textColor = rootStyles.getPropertyValue('--text-color').trim();
+	const accentColor = rootStyles.getPropertyValue('--accent-color').trim();
+	const hoverColor = rootStyles.getPropertyValue('--hover-color').trim();
+
+	// Створюємо попап
+	const confirmBox = document.createElement('div');
+	confirmBox.style.position = 'absolute';
+	confirmBox.style.left = `${event.pageX - 150}px`;
+	confirmBox.style.top = `${event.pageY - 50}px`;
+	confirmBox.style.background = bgColor;
+	confirmBox.style.color = textColor;
+	confirmBox.style.border = `1px solid ${textColor}`;
+	confirmBox.style.padding = '10px';
+	confirmBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+	confirmBox.style.borderRadius = '5px';
+	confirmBox.style.zIndex = 1000;
+	confirmBox.innerHTML = `
+    <p>${message}</p>
+		<div style="justify-content:space-around; display:flex;">
+    <button id="yes-btn" style="background:${accentColor}; color:${textColor}; border:none; padding:5px 10px; margin-right:5px; border-radius:5px">Так</button>
+    <button id="no-btn" style="background:${hoverColor}; color:${textColor}; border:none; padding:5px 10px;border-radius:5px">Ні</button>
+		</div>
+  `;
+
+	document.body.appendChild(confirmBox);
+	console.log(confirmBox);
+
+	// Обробники кнопок
+	confirmBox.querySelector('#yes-btn').onclick = () => {
+		onConfirm(true);
+		confirmBox.remove();
+	};
+
+	confirmBox.querySelector('#no-btn').onclick = () => {
+		onConfirm(false);
+		confirmBox.remove();
+	};
+
+	// Закриття при кліку поза попапом
+	//document.addEventListener('click', function handleClickOutside(e) {
+	//	console.log('remove');
+
+	//	if (!confirmBox.contains(e.target)) {
+	//		confirmBox.remove();
+	//		document.removeEventListener('click', handleClickOutside);
+	//	}
+	//}, { once: true });
 }
 
 function deleteRecordFromBD(list_id, list_type, List_amount) {
@@ -251,3 +344,58 @@ function addTransaction(date, longIntTime, type, article, amount) {
 function addLocalStorageTransaction() {
 	localStorage.setItem("transactions", JSON.stringify(mTransactions));
 }
+
+function addLongPressListener(element) {
+	let longPressTimer;
+
+	element.addEventListener('mousedown', function (e) {
+		longPressTimer = setTimeout(() => {
+			showContextMenu(e, element, true); // Передаємо елемент для роботи з його даними
+		}, 500); // Час довгого натискання
+	});
+
+	element.addEventListener('mouseup', function () {
+		clearTimeout(longPressTimer);
+	});
+
+	element.addEventListener('mouseleave', function () {
+		clearTimeout(longPressTimer);
+	});
+}
+
+function showContextMenu(event, element, longTap = false) {
+
+	console.log("SHOW", contextMenu);
+	event.preventDefault();
+
+	contextMenu.classList.add('show');
+	contextMenu.style.left = `${event.pageX - 10}px`;
+	contextMenu.style.top = `${event.pageY - 10}px`;
+
+	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
+	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
+	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
+
+	isLongTap = longTap;
+	setTimeout(() => {
+		document.addEventListener('click', handleOutsideClick);
+	}, 50);
+}
+
+function handleOutsideClick(event) {
+
+	if (isLongTap) {
+		isLongTap = false; // Скидаємо прапорець
+		return; // Вихід із функції, щоб не закривати меню
+	}
+
+	if (!contextMenu.contains(event.target)) {
+		closeContextMenu();
+		document.removeEventListener('click', handleOutsideClick);
+	}
+}
+
+function closeContextMenu() {
+	contextMenu.classList.remove('show');
+}
+
