@@ -199,8 +199,8 @@ function simpleConfirm(event, message, onConfirm) {
 
 	let coords = getInScreenCoords(event, 200, 150);
 
-	confirmBox.style.left = `${coords.x - 150}px`;
-	confirmBox.style.top = `${coords.y - 50}px`;
+	confirmBox.style.left = `${coords.x}px`;
+	confirmBox.style.top = `${coords.y}px`;
 
 	document.body.appendChild(confirmBox);
 
@@ -352,8 +352,8 @@ function showContextMenu(event, element, longTap = false) {
 
 	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
 
-	contextMenu.style.left = `${coords.x - 10}px`;
-	contextMenu.style.top = `${coords.y - 10}px`;
+	contextMenu.style.left = `${coords.x}px`;
+	contextMenu.style.top = `${coords.y}px`;
 
 	contextMenu.classList.remove('visually-hidden');
 	contextMenu.classList.add('show');
@@ -386,7 +386,7 @@ function closeContextMenu() {
 	contextMenu.classList.add('visually-hidden');
 }
 
-function getInScreenCoords(event, objWidth, objHeight, objPadding = 20) {
+function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 	const screenWidth = window.innerWidth;
 	const screenHeight = window.innerHeight;
 

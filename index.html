@@ -25,9 +25,8 @@
 			<header class="header">
 				<nav>
 					<ul>
-						<li><a href="#income">Income</a></li>
+						<li><a href="#income-section">Income</a></li>
 						<li><a href="#costs">Costs</a></li>
-						<li><a href="#transactions">Transactions</a></li>
 						<li><a href="#stat-table">Statistic</a></li>
 					</ul>
 					<div class="theme-selector">
@@ -47,6 +46,8 @@
 					<h2>Balance info</h2>
 					<p class="balance-text">Your balance: <span class="balance" id="balance"></span> $</p>
 				</section>
+
+				<!-- lorem text -->
 				<section>
 					<h2>DashBoard</h2>
 					<p>
@@ -95,7 +96,7 @@
 					<!--</div>-->
 				</section>
 				<!-- input income -->
-				<section>
+				<section id="income-section">
 					<form class="income-form" id="income-form">
 						<h2>Input data info</h2>
 						<div class="visually-hidden">
@@ -104,7 +105,7 @@
 						<div class="data-container">
 							<input class="def-input" type="text" id="input-art" name="inputArt" placeholder="Input article:" />
 						</div>
-						<div class="data-container double">
+						<div class="data-container">
 							<input class="def-input" type="text" name="datepicker" id="datepicker" placeholder="Input date:" />
 							<input class="def-input" type="text" id="input-sum" name="inputSum" placeholder="Input amount:" />
 						</div>
