@@ -13,11 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//console.log("Завантажені транзакції:", mTransactions);
 
-	if (mTransactions.length == 0) {
-		updateBalance(0);
-	} else {
-		updateBalance(JSON.parse(localStorage.getItem("balance")));
-	}
+	updateBalance();
 	updateList();
 
 	document.getElementById("date-col").addEventListener("click", () => mySort("longIntTime"));
@@ -231,16 +227,6 @@ function simpleConfirm(event, message, onConfirm) {
 }
 
 function deleteRecordFromBD(list_id, list_type, List_amount) {
-	const balanceValue = parseFloat(document.getElementById("balance").textContent);
-	let newBalanceValue = 0;
-
-	if (list_type == "INCOME") {
-		newBalanceValue = balanceValue - List_amount;
-	} else {
-		newBalanceValue = balanceValue + List_amount;
-	}
-
-	//console.log("Видалити запис: ", list_id);
 
 	if (list_id >= 0) {
 		//console.log("Record found at index:", list_id);
@@ -248,7 +234,7 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 
 		addLocalStorageTransaction();
 		updateList();
-		updateBalance(newBalanceValue);
+		updateBalance();
 	} else {
 		console.warn("Record not found for ID:", list_id);
 	}
@@ -260,16 +246,9 @@ function handleTransactionClick(type) {
 	const sumField = formInput.inputSum;
 	const articleField = formInput.inputArt;
 	const dateField = formInput.datepicker;
-	const idField = formInput.inputId.value;
+	const idField = formInput.inputId.valueAsNumber;
 
-	let balDash = 0;
-	let trIndex = isNaN(idField) ? null : idField;
-
-	const balanceField = document.getElementById("balance").textContent;
-
-	if (!isNaN(balanceField) && balanceField.trim() !== "") {
-		balDash = parseFloat(balanceField);
-	}
+	const trIndex = isNaN(idField) ? null : idField;
 
 	const validated = checkValidate(dateField, articleField, sumField);
 
@@ -278,15 +257,11 @@ function handleTransactionClick(type) {
 		const costField = parseFloat(sumField.value.replace(",", "."));
 		const longIntTime = datepicker.getDate().getTime();
 
-
 		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField, trIndex);
 
 		formInput.reset();
-
-		balDash = (type === "income" ? balDash + costField : balDash - costField).toFixed(2);
-
 		updateList();
-		updateBalance(balDash);
+		updateBalance();
 		//localStorage.setItem("balance", balDash);
 
 		//document.getElementById("balance").textContent = balDash;
@@ -317,7 +292,16 @@ function checkValidate(dateField, articleField, sumField) {
 	}
 }
 
-function updateBalance(newBalance) {
+function updateBalance() {
+	newBalance = 0;
+	mTransactions.forEach((item) => {
+		if (item.type == "income") {
+			newBalance = newBalance + item.amount;
+		} else {
+			newBalance = newBalance - item.amount;
+		};
+	});
+
 	document.getElementById("balance").textContent = newBalance;
 	localStorage.setItem("balance", newBalance);
 }

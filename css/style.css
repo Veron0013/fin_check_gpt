@@ -73,12 +73,16 @@ body {
 
 section {
 	width: 100%;
-	margin: 0 auto;
+	margin: 30px auto;
 }
 
 h2,
 p {
 	text-align: center;
+}
+
+p {
+	font-size: clamp(12px, 2vw, 16px);
 }
 
 ul {
@@ -157,6 +161,10 @@ a:hover {
 
 .balance {
 	font-weight: 700;
+}
+
+.balance-text {
+	font-size: clamp(18px, 2vw, 24px);
 }
 
 /*
@@ -272,7 +280,7 @@ a:hover {
 .statistic-sec .market-list-header .list-column,
 .statistic-sec .list-item .item-cell {
 	align-items: center;
-	display: flex;
+	/*display: flex;*/
 	flex-grow: 1;
 }
 
