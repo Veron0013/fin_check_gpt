@@ -214,16 +214,16 @@ a:hover {
 /* button */
 .income-form .button-container {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
+	padding: 0 4%;
 	gap: 2%
 }
 
-
 .income-form .button-container .submit-btn {
-	width: 45%;
+	width: 50%;
 	height: 50px;
 	margin: 4px 4px;
-	font-size: 18px;
+	font-size: clamp(16px, 2vw, 22px);
 	border-radius: 15px;
 	border: 0;
 	font-family: "Fin-site-font", "Montserrat", sans-serif;
@@ -237,6 +237,10 @@ a:hover {
 	transition: 0.5s;
 }
 
+.submit-btn:active {
+	box-shadow: 0 0 0 6px var(--hover-color);
+}
+
 .market-list-header>div>span:hover {
 	font-weight: 900;
 	transition: 0.5s;
@@ -245,15 +249,15 @@ a:hover {
 	text-shadow: 2px 2px 4px #232323;
 }
 
-.submit-btn:active {
-	box-shadow: 0 0 0 6px var(--hover-color);
-}
-
 /* statistic */
 .statistic-sec {
 	width: 100%;
 	margin: 0 auto;
 	position: relative;
+}
+
+.tab-container {
+	margin: 0 auto;
 }
 
 .justify-end {
@@ -274,6 +278,7 @@ a:hover {
 	font-size: 16px;
 	padding: 0 0 6px;
 	width: 100%;
+	justify-content: center;
 }
 
 .statistic-sec .market-list-header .list-column,
@@ -291,6 +296,7 @@ a:hover {
 	padding: 0;
 	position: relative;
 	width: 100%;
+	justify-content: center;
 }
 
 /*
