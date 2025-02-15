@@ -61,13 +61,9 @@ body {
 	transition: background-color 0.3s ease;
 
 	-webkit-user-select: none;
-	/* Для WebKit-браузерів (Chrome, Safari, etc.) */
 	-moz-user-select: none;
-	/* Для Firefox */
 	-ms-user-select: none;
-	/* Для IE/Edge */
 	user-select: none;
-	/* Стандартне значення для підтримуваних браузерів */
 }
 
 .wrapper {
@@ -341,4 +337,17 @@ a:hover {
 
 .context-menu button:hover {
 	background-color: var(--hover-color);
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+	white-space: nowrap;
+	clip-path: inset(100%);
+	clip: rect(0 0 0 0);
+	overflow: hidden;
 }

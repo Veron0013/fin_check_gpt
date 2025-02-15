@@ -63,23 +63,7 @@
 						doloremque nobis quia earum saepe quod asperiores! Pariatur laborum fugit id aspernatur saepe?
 					</p>
 				</section>
-				<!-- input income -->
-				<section>
-					<h2>Input data info</h2>
-					<form class="income-form">
-						<div class="data-container">
-							<input class="def-input" type="text" id="input-art" name="input-art" placeholder="Input article:" />
-						</div>
-						<div class="data-container double">
-							<input class="def-input" type="text" name="datepicker" id="datepicker" placeholder="Input date:" />
-							<input class="def-input" type="text" id="input-sum" name="input-sum" placeholder="Input amount:" />
-						</div>
-						<div class="button-container">
-							<button type="button" class="submit-btn" id="button-income">INCOMES</button>
-							<button type="button" class="submit-btn" id="button-cost">EXPENSES</button>
-						</div>
-					</form>
-				</section>
+
 				<!-- statistic -->
 				<section class="statistic-sec" id="statistic-sec">
 					<h2>Statistic data</h2>
@@ -110,6 +94,27 @@
 					</div>
 					<!--</div>-->
 				</section>
+				<!-- input income -->
+				<section>
+					<form class="income-form">
+						<h2>Input data info</h2>
+						<div class="visually-hidden">
+							<input class="def-input" type="number" id="input-id" name="input-id" />
+						</div>
+						<div class="data-container">
+							<input class="def-input" type="text" id="input-art" name="input-art" placeholder="Input article:" />
+						</div>
+						<div class="data-container double">
+							<input class="def-input" type="text" name="datepicker" id="datepicker" placeholder="Input date:" />
+							<input class="def-input" type="text" id="input-sum" name="input-sum" placeholder="Input amount:" />
+						</div>
+						<div class="button-container">
+							<button type="button" class="submit-btn" id="button-income">INCOMES</button>
+							<button type="button" class="submit-btn" id="button-cost">EXPENSES</button>
+						</div>
+					</form>
+				</section>
+
 				<div id="context-menu" class="context-menu">
 					<button id="edit">Редагувати</button>
 					<button id="delete">Видалити</button>

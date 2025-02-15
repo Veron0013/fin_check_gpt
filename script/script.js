@@ -192,6 +192,10 @@ function simpleConfirm(event, message, onConfirm) {
 
 	// Створюємо попап
 	const confirmBox = document.createElement('div');
+	console.log(confirmBox);
+
+	//ширина/висота
+
 	confirmBox.style.position = 'absolute';
 	confirmBox.style.left = `${event.pageX - 150}px`;
 	confirmBox.style.top = `${event.pageY - 50}px`;
@@ -265,6 +269,7 @@ function handleTransactionClick(type) {
 	const dateField = document.getElementById("datepicker");
 
 	let balDash = 0;
+	let trIndex = null;
 
 	const balanceField = document.getElementById("balance").textContent;
 
@@ -279,7 +284,7 @@ function handleTransactionClick(type) {
 		const costField = parseFloat(sumField.value.replace(",", "."));
 		const longIntTime = datepicker.getDate().getTime();
 
-		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField);
+		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField, trIndex);
 
 		sumField.value = "";
 		articleField.value = "";
@@ -323,7 +328,7 @@ function updateBalance(newBalance) {
 	localStorage.setItem("balance", newBalance);
 }
 
-function addTransaction(date, longIntTime, type, article, amount) {
+function addTransaction(date, longIntTime, type, article, amount, index = null) {
 	const newTransaction = {
 		id: mTransactions.length,
 		longIntTime,
@@ -333,12 +338,13 @@ function addTransaction(date, longIntTime, type, article, amount) {
 		amount: parseFloat(amount),
 	};
 
-	mTransactions.push(newTransaction);
+	if (index == null) {
+		mTransactions.push(newTransaction);
+	} else {
+		mTransactions[index] = newTransaction;
+	}
 
 	addLocalStorageTransaction();
-
-	//console.log("Додано транзакцію:", newTransaction);
-	//console.log("Оновлений масив транзакцій:", mTransactions);
 }
 
 function addLocalStorageTransaction() {
@@ -368,9 +374,12 @@ function showContextMenu(event, element, longTap = false) {
 	console.log("SHOW", contextMenu);
 	event.preventDefault();
 
+	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
+
+	contextMenu.style.left = `${coords.x}px`;
+	contextMenu.style.top = `${coords.y}px`;
+
 	contextMenu.classList.add('show');
-	contextMenu.style.left = `${event.pageX - 10}px`;
-	contextMenu.style.top = `${event.pageY - 10}px`;
 
 	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
 	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
@@ -398,4 +407,23 @@ function handleOutsideClick(event) {
 function closeContextMenu() {
 	contextMenu.classList.remove('show');
 }
+
+function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
+	const screenWidth = window.innerWidth;
+	const screenHeight = window.innerHeight;
+
+	let xPos = event.pageX;
+	let yPos = event.pageY;
+
+	if (xPos + objWidth + objPadding > screenWidth) {
+		xPos = screenWidth - objWidth - objPadding;
+	}
+
+	if (yPos + objHeight + objPadding > screenHeight) {
+		yPos = screenHeight - objHeight - objPadding;
+	}
+
+	return { x: xPos, y: yPos };
+}
+
 
