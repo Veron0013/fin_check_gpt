@@ -96,17 +96,17 @@
 				</section>
 				<!-- input income -->
 				<section>
-					<form class="income-form">
+					<form class="income-form" id="income-form">
 						<h2>Input data info</h2>
 						<div class="visually-hidden">
-							<input class="def-input" type="number" id="input-id" name="input-id" />
+							<input class="def-input" type="text" id="input-id" name="inputId" />
 						</div>
 						<div class="data-container">
-							<input class="def-input" type="text" id="input-art" name="input-art" placeholder="Input article:" />
+							<input class="def-input" type="text" id="input-art" name="inputArt" placeholder="Input article:" />
 						</div>
 						<div class="data-container double">
 							<input class="def-input" type="text" name="datepicker" id="datepicker" placeholder="Input date:" />
-							<input class="def-input" type="text" id="input-sum" name="input-sum" placeholder="Input amount:" />
+							<input class="def-input" type="text" id="input-sum" name="inputSum" placeholder="Input amount:" />
 						</div>
 						<div class="button-container">
 							<button type="button" class="submit-btn" id="button-income">INCOMES</button>
@@ -115,7 +115,7 @@
 					</form>
 				</section>
 
-				<div id="context-menu" class="context-menu">
+				<div id="context-menu" class="context-menu visually-hidden">
 					<button id="edit">Редагувати</button>
 					<button id="delete">Видалити</button>
 					<button id="cancel">Закрити</button>

@@ -38,7 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	//menu
 	document.getElementById('edit').addEventListener('click', function () {
 		const selectedId = document.getElementById('context-menu').getAttribute('data-selected-id');
-		editTransaction(selectedId);
+
+		const formInput = document.getElementById("income-form");
+		formInput.inputId.value = selectedId;
+		formInput.inputArt.value = mTransactions[selectedId].article.trim();
+		formInput.inputSum.value = mTransactions[selectedId].amount;
+		datepicker.setDate(mTransactions[selectedId].longIntTime);
+		//editTransaction(selectedId);
 		closeContextMenu();
 	});
 
@@ -47,11 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		const selectedType = document.getElementById('context-menu').getAttribute('data-type-ctx');
 		const selectedAmount = document.getElementById('context-menu').getAttribute('data-amount-ctx');
 
+		console.log(selectedId);
+		console.log(mTransactions[Number(selectedId)]);
+
 		// Викликаємо simpleConfirm з повідомленням
 		simpleConfirm(event, 'Ви дійсно хочете видалити цю транзакцію?', function (confirmed) {
 			if (confirmed) {
 				//console.log(selectedId, selectedType, selectedAmount);
-				deleteRecordFromBD(selectedId, selectedType, parseFloat(selectedAmount));  // Видалення при підтвердженні
+				deleteRecordFromBD(selectedId, selectedType, parseFloat(selectedAmount));
 			}
 			closeContextMenu();  // Закриття контекстного меню в будь-якому випадку
 		});
@@ -183,39 +192,21 @@ function updateList() {
 function simpleConfirm(event, message, onConfirm) {
 
 	closeContextMenu();
-	// Отримуємо кольори з CSS змінних
-	const rootStyles = getComputedStyle(document.documentElement);
-	const bgColor = rootStyles.getPropertyValue('--bg-color').trim();
-	const textColor = rootStyles.getPropertyValue('--text-color').trim();
-	const accentColor = rootStyles.getPropertyValue('--accent-color').trim();
-	const hoverColor = rootStyles.getPropertyValue('--hover-color').trim();
-
 	// Створюємо попап
 	const confirmBox = document.createElement('div');
-	console.log(confirmBox);
+	confirmBox.innerHTML = `<p>${message}</p>
+		<div>
+	  <button id="yes-btn">Так</button>
+	  <button id="no-btn">Ні</button>
+		</div>`;
+	confirmBox.classList.add('context-box');
 
-	//ширина/висота
+	let coords = getInScreenCoords(event, 200, 150);
 
-	confirmBox.style.position = 'absolute';
-	confirmBox.style.left = `${event.pageX - 150}px`;
-	confirmBox.style.top = `${event.pageY - 50}px`;
-	confirmBox.style.background = bgColor;
-	confirmBox.style.color = textColor;
-	confirmBox.style.border = `1px solid ${textColor}`;
-	confirmBox.style.padding = '10px';
-	confirmBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-	confirmBox.style.borderRadius = '5px';
-	confirmBox.style.zIndex = 1000;
-	confirmBox.innerHTML = `
-    <p>${message}</p>
-		<div style="justify-content:space-around; display:flex;">
-    <button id="yes-btn" style="background:${accentColor}; color:${textColor}; border:none; padding:5px 10px; margin-right:5px; border-radius:5px">Так</button>
-    <button id="no-btn" style="background:${hoverColor}; color:${textColor}; border:none; padding:5px 10px;border-radius:5px">Ні</button>
-		</div>
-  `;
+	confirmBox.style.left = `${coords.x - 150}px`;
+	confirmBox.style.top = `${coords.y - 50}px`;
 
 	document.body.appendChild(confirmBox);
-	console.log(confirmBox);
 
 	// Обробники кнопок
 	confirmBox.querySelector('#yes-btn').onclick = () => {
@@ -264,12 +255,15 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 }
 
 function handleTransactionClick(type) {
-	const sumField = document.getElementById("input-sum");
-	const articleField = document.getElementById("input-art");
-	const dateField = document.getElementById("datepicker");
+	const formInput = document.getElementById("income-form");
+
+	const sumField = formInput.inputSum;
+	const articleField = formInput.inputArt;
+	const dateField = formInput.datepicker;
+	const idField = formInput.inputId.value;
 
 	let balDash = 0;
-	let trIndex = null;
+	let trIndex = isNaN(idField) ? null : idField;
 
 	const balanceField = document.getElementById("balance").textContent;
 
@@ -284,10 +278,10 @@ function handleTransactionClick(type) {
 		const costField = parseFloat(sumField.value.replace(",", "."));
 		const longIntTime = datepicker.getDate().getTime();
 
+
 		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField, trIndex);
 
-		sumField.value = "";
-		articleField.value = "";
+		formInput.reset();
 
 		balDash = (type === "income" ? balDash + costField : balDash - costField).toFixed(2);
 
@@ -330,7 +324,7 @@ function updateBalance(newBalance) {
 
 function addTransaction(date, longIntTime, type, article, amount, index = null) {
 	const newTransaction = {
-		id: mTransactions.length,
+		id: index === null ? mTransactions.length : index,
 		longIntTime,
 		date,
 		type,
@@ -370,15 +364,14 @@ function addLongPressListener(element) {
 }
 
 function showContextMenu(event, element, longTap = false) {
-
-	console.log("SHOW", contextMenu);
 	event.preventDefault();
 
 	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
 
-	contextMenu.style.left = `${coords.x}px`;
-	contextMenu.style.top = `${coords.y}px`;
+	contextMenu.style.left = `${coords.x - 10}px`;
+	contextMenu.style.top = `${coords.y - 10}px`;
 
+	contextMenu.classList.remove('visually-hidden');
 	contextMenu.classList.add('show');
 
 	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
@@ -406,9 +399,10 @@ function handleOutsideClick(event) {
 
 function closeContextMenu() {
 	contextMenu.classList.remove('show');
+	contextMenu.classList.add('visually-hidden');
 }
 
-function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
+function getInScreenCoords(event, objWidth, objHeight, objPadding = 20) {
 	const screenWidth = window.innerWidth;
 	const screenHeight = window.innerHeight;
 

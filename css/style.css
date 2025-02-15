@@ -351,3 +351,53 @@ a:hover {
 	clip: rect(0 0 0 0);
 	overflow: hidden;
 }
+
+/* модальне вікно так/ні */
+.context-box {
+	position: absolute;
+	background: var(--bg-color, #fff);
+	color: var(--text-color, #333);
+	border: 1px solid var(--text-color, #333);
+	padding: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	z-index: 1000;
+	max-width: 350px;
+	max-height: 200px;
+}
+
+.context-box p {
+	margin: 0 0 20px 0;
+	text-align: center;
+}
+
+.context-box div {
+	align-items: end;
+	justify-content: space-around;
+	display: flex;
+}
+
+.context-box .buttons {
+	display: flex;
+	justify-content: space-around;
+}
+
+.context-box button {
+	border: none;
+	padding: 8px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	min-width: 70px;
+}
+
+.context-box #yes-btn {
+	background: var(--accent-color, #28a745);
+	color: var(--text-color, #fff);
+}
+
+.context-box #no-btn {
+	background: var(--hover-color, #dc3545);
+	color: var(--text-color, #fff);
+}
+
+/*  */
