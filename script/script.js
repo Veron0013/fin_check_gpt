@@ -379,7 +379,7 @@ async function showContextMenu(event, element, longTap = false) {
 		yPos = event.clientY;
 	}
 
-	console.log("*", xPos);
+	console.log(event);
 	console.log("*", yPos);
 
 	await getAttributeAsync(element, "data-type");
@@ -452,11 +452,12 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 	let yPos = 0;
 
 	if (event.touches && event.touches.length > 0) {
-		xPos = event.touches?.[0].pageX || event.clientX;
-		yPos = event.touches?.[0].pageY || event.clientY;
+		xPos = event.touches[0].clientX; // Відносно вікна
+		yPos = event.touches[0].clientY; // Відносно вікна
+		console.log("touches");
 	} else {
-		xPos = event.clientX;
-		yPos = event.clientY;
+		xPos = event.screenX;
+		yPos = event.screenY;
 	}
 
 
