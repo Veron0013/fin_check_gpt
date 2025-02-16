@@ -365,30 +365,32 @@ function addLongPressListener(element) {
 	});
 }
 
-function showContextMenu(event, element, longTap = false) {
+async function showContextMenu(event, element, longTap = false) {
 	event.preventDefault();
 
 	contextMenu.classList.remove('visually-hidden');
 	contextMenu.classList.add('show');
 
+	if (event.touches && event.touches.length > 0) {
+		xPos = event.touches?.[0].pageX || event.clientX;
+		yPos = event.touches?.[0].pageY || event.clientY;
+	} else {
+		xPos = event.clientX;
+		yPos = event.clientY;
+	}
+
+	console.log("*", xPos);
+	console.log("*", yPos);
+
+	await getAttributeAsync(element, "data-type");
+
+	await nextFrame();
+
 	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
+
 	contextMenu.style.left = `${coords.x}px`;
 	contextMenu.style.top = `${coords.y}px`;
 
-	if (!element) {
-		console.log("showContextMenu викликано без element!");
-		return;
-	}
-
-	let cmnVar;
-	try {
-		cmnVar = element.getAttribute('data-type');
-	} catch (error) {
-		console.log("Помилка під час отримання атрибута data-type:", error);
-		return; // Вихід замість рекурсивного виклику
-	}
-
-	console.log(element.getAttribute('data-id'));
 
 	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
 	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
@@ -398,6 +400,28 @@ function showContextMenu(event, element, longTap = false) {
 	setTimeout(() => {
 		document.addEventListener('click', handleOutsideClick);
 	}, 50);
+}
+
+function nextFrame() {
+	return new Promise(requestAnimationFrame);
+}
+
+function getAttributeAsync(element, attribute) {
+	return new Promise((resolve, reject) => {
+
+		if (!element) return reject("Елемент не існує!");
+
+		try {
+			let attr = element.getAttribute(attribute);
+			if (attr !== null) {
+				resolve(attr);
+			} else {
+				reject(`Атрибут ${attribute} не знайдено!`);
+			}
+		} catch (error) {
+			reject(error);
+		}
+	});
 }
 
 function handleOutsideClick(event) {
@@ -435,6 +459,7 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 		yPos = event.clientY;
 	}
 
+
 	if (xPos + objWidth + objPadding > screenWidth) {
 		xPos = screenWidth - objWidth - objPadding;
 	}
@@ -445,6 +470,9 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 
 	xPos = Math.max(xPos, objPadding);
 	yPos = Math.max(yPos, objPadding);
+
+	console.log("-", xPos);
+	console.log("-", yPos);
 
 	return { x: xPos, y: yPos };
 }
