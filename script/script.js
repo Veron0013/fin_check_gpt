@@ -98,6 +98,9 @@ function mySort(key) {
 }
 
 function updateList() {
+
+	console.log("list_up");
+
 	const listField = document.getElementById("statistic-sec");
 
 	while (listField.children.length > 3) {
@@ -345,22 +348,51 @@ function addLongPressListener(element) {
 	element.addEventListener('mouseleave', function () {
 		clearTimeout(longPressTimer);
 	});
+
+	// Для мобільних пристроїв
+	element.addEventListener("touchstart", function (event) {
+		longPressTimer = setTimeout(() => {
+			showContextMenu(event);
+		}, 500);
+	}, { passive: false });
+
+	element.addEventListener("touchend", function () {
+		clearTimeout(longPressTimer);
+	});
+
+	element.addEventListener("touchmove", function () {
+		clearTimeout(longPressTimer);
+	});
 }
 
 function showContextMenu(event, element, longTap = false) {
 	event.preventDefault();
 
-	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
-
-	contextMenu.style.left = `${coords.x}px`;
-	contextMenu.style.top = `${coords.y}px`;
-
 	contextMenu.classList.remove('visually-hidden');
 	contextMenu.classList.add('show');
 
-	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
+	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
+	contextMenu.style.left = `${coords.x}px`;
+	contextMenu.style.top = `${coords.y}px`;
+
+	if (!element) {
+		console.log("showContextMenu викликано без element!");
+		return;
+	}
+
+	let cmnVar;
+	try {
+		cmnVar = element.getAttribute('data-type');
+	} catch (error) {
+		console.log("Помилка під час отримання атрибута data-type:", error);
+		return; // Вихід замість рекурсивного виклику
+	}
+
+	console.log(element.getAttribute('data-id'));
+
 	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
 	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
+	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
 
 	isLongTap = longTap;
 	setTimeout(() => {
@@ -387,11 +419,21 @@ function closeContextMenu() {
 }
 
 function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
+
 	const screenWidth = window.innerWidth;
 	const screenHeight = window.innerHeight;
 
-	let xPos = event.pageX;
-	let yPos = event.pageY;
+
+	let xPos = 0;
+	let yPos = 0;
+
+	if (event.touches && event.touches.length > 0) {
+		xPos = event.touches?.[0].pageX || event.clientX;
+		yPos = event.touches?.[0].pageY || event.clientY;
+	} else {
+		xPos = event.clientX;
+		yPos = event.clientY;
+	}
 
 	if (xPos + objWidth + objPadding > screenWidth) {
 		xPos = screenWidth - objWidth - objPadding;
@@ -400,6 +442,9 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 	if (yPos + objHeight + objPadding > screenHeight) {
 		yPos = screenHeight - objHeight - objPadding;
 	}
+
+	xPos = Math.max(xPos, objPadding);
+	yPos = Math.max(yPos, objPadding);
 
 	return { x: xPos, y: yPos };
 }
