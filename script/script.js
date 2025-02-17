@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		const selectedType = document.getElementById('context-menu').getAttribute('data-type-ctx');
 		const selectedAmount = document.getElementById('context-menu').getAttribute('data-amount-ctx');
 
-		console.log(selectedId);
-		console.log(mTransactions[Number(selectedId)]);
+		//console.log(selectedId);
+		//console.log(mTransactions[Number(selectedId)]);
 
 		// Викликаємо simpleConfirm з повідомленням
 		simpleConfirm(event, 'Ви дійсно хочете видалити цю транзакцію?', function (confirmed) {
@@ -98,8 +98,6 @@ function mySort(key) {
 }
 
 function updateList() {
-
-	console.log("list_up");
 
 	const listField = document.getElementById("statistic-sec");
 
@@ -190,6 +188,9 @@ function updateList() {
 
 function simpleConfirm(event, message, onConfirm) {
 
+	let xConfirm = contextMenu.style.left;
+	let yConfirm = contextMenu.style.top;
+
 	closeContextMenu();
 	// Створюємо попап
 	const confirmBox = document.createElement('div');
@@ -200,10 +201,10 @@ function simpleConfirm(event, message, onConfirm) {
 		</div>`;
 	confirmBox.classList.add('context-box');
 
-	let coords = getInScreenCoords(event, 200, 150);
+	//let coords = getInScreenCoords(event, 200, 150);
 
-	confirmBox.style.left = `${coords.x}px`;
-	confirmBox.style.top = `${coords.y}px`;
+	confirmBox.style.left = xConfirm;//`${coords.x}px`;
+	confirmBox.style.top = yConfirm; //`${coords.y}px`;
 
 	document.body.appendChild(confirmBox);
 
@@ -336,9 +337,11 @@ function addLongPressListener(element) {
 	let longPressTimer;
 
 	element.addEventListener('mousedown', function (e) {
-		longPressTimer = setTimeout(() => {
-			showContextMenu(e, element, true); // Передаємо елемент для роботи з його даними
-		}, 500); // Час довгого натискання
+		if (!longPressTimer) {
+			longPressTimer = setTimeout(() => {
+				showContextMenu(e, element, true); // Передаємо елемент для роботи з його даними
+			}, 500);
+		} // Час довгого натискання
 	});
 
 	element.addEventListener('mouseup', function () {
@@ -351,9 +354,11 @@ function addLongPressListener(element) {
 
 	// Для мобільних пристроїв
 	element.addEventListener("touchstart", function (event) {
-		longPressTimer = setTimeout(() => {
-			showContextMenu(event);
-		}, 500);
+		if (!longPressTimer) {
+			longPressTimer = setTimeout(() => {
+				showContextMenu(event);
+			}, 500);
+		}
 	}, { passive: false });
 
 	element.addEventListener("touchend", function () {
@@ -368,8 +373,8 @@ function addLongPressListener(element) {
 async function showContextMenu(event, element, longTap = false) {
 	event.preventDefault();
 
-	contextMenu.classList.remove('visually-hidden');
-	contextMenu.classList.add('show');
+	//contextMenu.classList.remove('visually-hidden');
+	//contextMenu.classList.add('show');
 
 	if (event.touches && event.touches.length > 0) {
 		xPos = event.touches?.[0].pageX || event.clientX;
@@ -379,22 +384,28 @@ async function showContextMenu(event, element, longTap = false) {
 		yPos = event.clientY;
 	}
 
-	console.log(event);
-	console.log("*", yPos);
+	//console.log("*", xPos);
+	//console.log("*", yPos);
 
 	await getAttributeAsync(element, "data-type");
 
 	await nextFrame();
+
+	contextMenu.classList.remove('visually-hidden');
+	contextMenu.classList.add('show');
 
 	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
 
 	contextMenu.style.left = `${coords.x}px`;
 	contextMenu.style.top = `${coords.y}px`;
 
-
 	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
 	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
 	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
+
+
+	//console.log(contextMenu.style.left);
+	//console.log(contextMenu.style.top);
 
 	isLongTap = longTap;
 	setTimeout(() => {
@@ -452,14 +463,12 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 	let yPos = 0;
 
 	if (event.touches && event.touches.length > 0) {
-		xPos = event.touches[0].clientX; // Відносно вікна
-		yPos = event.touches[0].clientY; // Відносно вікна
-		console.log("touches");
+		xPos = event.touches?.[0].pageX || event.clientX;
+		yPos = event.touches?.[0].pageY || event.clientY;
 	} else {
-		xPos = event.screenX;
-		yPos = event.screenY;
+		xPos = event.clientX;
+		yPos = event.clientY;
 	}
-
 
 	if (xPos + objWidth + objPadding > screenWidth) {
 		xPos = screenWidth - objWidth - objPadding;
@@ -472,8 +481,10 @@ function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
 	xPos = Math.max(xPos, objPadding);
 	yPos = Math.max(yPos, objPadding);
 
-	console.log("-", xPos);
-	console.log("-", yPos);
+	yPos = yPos + window.scrollY;
+
+	//console.log("-", window.scrollY);
+	//console.log("-", window);
 
 	return { x: xPos, y: yPos };
 }
