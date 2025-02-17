@@ -70,6 +70,202 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
+//Контекст меню
+function addLongPressListener(element) {
+	let longPressTimer = null;
+
+	function startPressTimer(event) {
+		if (longPressTimer) return; // Запобігаємо повторному запуску таймера
+		longPressTimer = setTimeout(() => {
+			showContextMenu(event, true);
+		}, 500);
+	}
+
+	function clearPressTimer() {
+		if (longPressTimer) {
+			clearTimeout(longPressTimer);
+			longPressTimer = null;
+		}
+	}
+
+	// Для миші
+	element.addEventListener('mousedown', startPressTimer);
+	element.addEventListener('mouseup', clearPressTimer);
+	element.addEventListener('mouseleave', clearPressTimer);
+
+	// Для сенсорних пристроїв
+	element.addEventListener("touchstart", startPressTimer, { passive: false });
+	element.addEventListener("touchend", clearPressTimer);
+	element.addEventListener("touchmove", clearPressTimer);
+}
+
+function handleOutsideClick(event) {
+
+	if (isLongTap) {
+		isLongTap = false; // Скидаємо прапорець
+		return; // Вихід із функції, щоб не закривати меню
+	}
+
+	if (!contextMenu.contains(event.target)) {
+		closeContextMenu();
+		document.removeEventListener('click', handleOutsideClick);
+	}
+}
+
+function closeContextMenu() {
+	contextMenu.classList.remove('show');
+	contextMenu.classList.add('visually-hidden');
+}
+
+async function showContextMenu(event, element, longTap = false) {
+	event.preventDefault();
+
+	//contextMenu.classList.remove('visually-hidden');
+	//contextMenu.classList.add('show');
+
+	if (event.touches && event.touches.length > 0) {
+		xPos = event.touches?.[0].pageX || event.clientX;
+		yPos = event.touches?.[0].pageY || event.clientY;
+	} else {
+		xPos = event.clientX;
+		yPos = event.clientY;
+	}
+
+	//console.log("*", xPos);
+	//console.log("*", yPos);
+
+	await getAttributeAsync(element, "data-type");
+
+	await nextFrame();
+
+	contextMenu.classList.remove('visually-hidden');
+	contextMenu.classList.add('show');
+
+	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
+
+	contextMenu.style.left = `${coords.x}px`;
+	contextMenu.style.top = `${coords.y}px`;
+
+	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
+	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
+	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
+
+
+	//console.log(contextMenu.style.left);
+	//console.log(contextMenu.style.top);
+
+	isLongTap = longTap;
+	setTimeout(() => {
+		document.addEventListener('click', handleOutsideClick);
+	}, 50);
+}
+
+//хз нашо 
+function nextFrame() {
+	return new Promise(requestAnimationFrame);
+}
+
+function getAttributeAsync(element, attribute) {
+	return new Promise((resolve, reject) => {
+
+		if (!element) return reject("Елемент не існує!");
+
+		try {
+			let attr = element.getAttribute(attribute);
+			if (attr !== null) {
+				resolve(attr);
+			} else {
+				reject(`Атрибут ${attribute} не знайдено!`);
+			}
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
+function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
+	const screenWidth = window.innerWidth;
+	const screenHeight = window.innerHeight;
+
+	let xPos = 0;
+	let yPos = 0;
+
+	if (event.touches && event.touches.length > 0) {
+		xPos = event.touches[0].pageX;
+		yPos = event.touches[0].pageY;
+	} else {
+		xPos = event.clientX;
+		yPos = event.clientY;
+	}
+
+	// Виправляємо, якщо елемент виходить за межі екрану
+	if (xPos + objWidth + objPadding > screenWidth) {
+		xPos = screenWidth - objWidth - objPadding;
+	}
+	if (yPos + objHeight + objPadding > screenHeight) {
+		yPos = screenHeight - objHeight - objPadding;
+	}
+
+	// Додаємо скрол для правильного позиціонування
+	const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+	yPos = Math.max(yPos + scrollY, objPadding);
+	xPos = Math.max(xPos, objPadding);
+
+	return { x: xPos, y: yPos };
+}
+
+//Кінець меню
+function simpleConfirm(event, message, onConfirm) {
+	let xConfirm = contextMenu.style.left;
+	let yConfirm = contextMenu.style.top;
+
+	closeContextMenu(); // Закриваємо контекстне меню
+
+	// Створюємо попап
+	const confirmBox = document.createElement('div');
+	confirmBox.innerHTML = `
+        <p>${message}</p>
+        <div>
+            <button id="yes-btn">Так</button>
+            <button id="no-btn">Ні</button>
+        </div>`;
+	confirmBox.classList.add('context-box');
+
+	confirmBox.style.left = xConfirm;
+	confirmBox.style.top = yConfirm;
+	document.body.appendChild(confirmBox);
+
+	// Обробка кнопок
+	confirmBox.querySelector('#yes-btn').onclick = () => {
+		onConfirm(true);
+		closeConfirmBox();
+	};
+
+	confirmBox.querySelector('#no-btn').onclick = () => {
+		onConfirm(false);
+		closeConfirmBox();
+	};
+
+	// Закриття при кліку поза попапом
+	function handleClickOutside(e) {
+		if (!confirmBox.contains(e.target)) {
+			closeConfirmBox();
+		}
+	}
+
+	function closeConfirmBox() {
+		confirmBox.remove();
+		document.removeEventListener('click', handleClickOutside);
+	}
+
+	setTimeout(() => {
+		document.addEventListener('click', handleClickOutside);
+	}, 50); // Невелика затримка, щоб не спрацювало одразу після створення
+}
+//Кінець конфірм
+
 function changeThemeStyle() {
 	document.body.classList.toggle("dark-theme");
 	let img_field = document.getElementById("theme-switch");
@@ -84,6 +280,7 @@ function changeThemeStyle() {
 	}
 }
 
+//робочі функції
 function mySort(key) {
 	mTransactions.sort((a, b) => {
 		if (typeof a[key] === "number" && typeof b[key] === "number") {
@@ -95,6 +292,96 @@ function mySort(key) {
 		return 0;
 	});
 	updateList();
+}
+
+function checkValidate(dateField, articleField, sumField) {
+	if (dateField.value.trim().length !== 10) {
+		//console.log('date ', dateField.value.trim());
+		return false;
+	}
+
+	if (/^\s*$/.test(articleField.value.trim())) {
+		//console.log('articleField ', articleField.value.trim());
+		return false;
+	}
+
+	if (/^-?\d+([.,]\d+)?$/.test(sumField.value)) {
+		//console.log('sum ', sumField.value);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//додавання і апдейт
+function addTransaction(date, longIntTime, type, article, amount, index = null) {
+	const newTransaction = {
+		id: index === null ? mTransactions.length : index,
+		longIntTime,
+		date,
+		type,
+		article,
+		amount: parseFloat(amount),
+	};
+
+	if (index == null) {
+		mTransactions.push(newTransaction);
+	} else {
+		mTransactions[index] = newTransaction;
+	}
+
+	addLocalStorageTransaction();
+}
+
+function addLocalStorageTransaction() {
+	localStorage.setItem("transactions", JSON.stringify(mTransactions));
+}
+
+function handleTransactionClick(type) {
+	const formInput = document.getElementById("income-form");
+
+	const sumField = formInput.inputSum;
+	const articleField = formInput.inputArt;
+	const dateField = formInput.datepicker;
+	const idField = formInput.inputId.valueAsNumber;
+
+	const trIndex = isNaN(idField) ? null : idField;
+
+	const validated = checkValidate(dateField, articleField, sumField);
+
+	//if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "")
+	if (validated) {
+		const costField = parseFloat(sumField.value.replace(",", "."));
+		const longIntTime = datepicker.getDate().getTime();
+
+		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField, trIndex);
+
+		formInput.reset();
+		updateList();
+		updateBalance();
+		//localStorage.setItem("balance", balDash);
+
+		//document.getElementById("balance").textContent = balDash;
+
+		//console.log("Новий баланс:", balDash);
+		//console.log("transactions:", localStorage.getItem("transactions"));
+	} else {
+		alert("Помилка! Введено некоректний символ.");
+	}
+}
+
+function updateBalance() {
+	newBalance = 0;
+	mTransactions.forEach((item) => {
+		if (item.type == "income") {
+			newBalance = newBalance + item.amount;
+		} else {
+			newBalance = newBalance - item.amount;
+		};
+	});
+
+	document.getElementById("balance").textContent = newBalance;
+	localStorage.setItem("balance", newBalance);
 }
 
 function updateList() {
@@ -186,50 +473,7 @@ function updateList() {
 	}
 }
 
-function simpleConfirm(event, message, onConfirm) {
-
-	let xConfirm = contextMenu.style.left;
-	let yConfirm = contextMenu.style.top;
-
-	closeContextMenu();
-	// Створюємо попап
-	const confirmBox = document.createElement('div');
-	confirmBox.innerHTML = `<p>${message}</p>
-		<div>
-	  <button id="yes-btn">Так</button>
-	  <button id="no-btn">Ні</button>
-		</div>`;
-	confirmBox.classList.add('context-box');
-
-	//let coords = getInScreenCoords(event, 200, 150);
-
-	confirmBox.style.left = xConfirm;//`${coords.x}px`;
-	confirmBox.style.top = yConfirm; //`${coords.y}px`;
-
-	document.body.appendChild(confirmBox);
-
-	// Обробники кнопок
-	confirmBox.querySelector('#yes-btn').onclick = () => {
-		onConfirm(true);
-		confirmBox.remove();
-	};
-
-	confirmBox.querySelector('#no-btn').onclick = () => {
-		onConfirm(false);
-		confirmBox.remove();
-	};
-
-	// Закриття при кліку поза попапом
-	//document.addEventListener('click', function handleClickOutside(e) {
-	//	console.log('remove');
-
-	//	if (!confirmBox.contains(e.target)) {
-	//		confirmBox.remove();
-	//		document.removeEventListener('click', handleClickOutside);
-	//	}
-	//}, { once: true });
-}
-
+//Видалення
 function deleteRecordFromBD(list_id, list_type, List_amount) {
 
 	if (list_id >= 0) {
@@ -243,250 +487,3 @@ function deleteRecordFromBD(list_id, list_type, List_amount) {
 		console.warn("Record not found for ID:", list_id);
 	}
 }
-
-function handleTransactionClick(type) {
-	const formInput = document.getElementById("income-form");
-
-	const sumField = formInput.inputSum;
-	const articleField = formInput.inputArt;
-	const dateField = formInput.datepicker;
-	const idField = formInput.inputId.valueAsNumber;
-
-	const trIndex = isNaN(idField) ? null : idField;
-
-	const validated = checkValidate(dateField, articleField, sumField);
-
-	//if (/^-?\d+([.,]\d+)?$/.test(sumField.value) && articleField.value.trim() != "" && dateField.value.trim() != "")
-	if (validated) {
-		const costField = parseFloat(sumField.value.replace(",", "."));
-		const longIntTime = datepicker.getDate().getTime();
-
-		addTransaction(dateField.value.trim(), longIntTime, type, articleField.value.trim(), costField, trIndex);
-
-		formInput.reset();
-		updateList();
-		updateBalance();
-		//localStorage.setItem("balance", balDash);
-
-		//document.getElementById("balance").textContent = balDash;
-
-		//console.log("Новий баланс:", balDash);
-		//console.log("transactions:", localStorage.getItem("transactions"));
-	} else {
-		alert("Помилка! Введено некоректний символ.");
-	}
-}
-
-function checkValidate(dateField, articleField, sumField) {
-	if (dateField.value.trim().length !== 10) {
-		//console.log('date ', dateField.value.trim());
-		return false;
-	}
-
-	if (/^\s*$/.test(articleField.value.trim())) {
-		//console.log('articleField ', articleField.value.trim());
-		return false;
-	}
-
-	if (/^-?\d+([.,]\d+)?$/.test(sumField.value)) {
-		//console.log('sum ', sumField.value);
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function updateBalance() {
-	newBalance = 0;
-	mTransactions.forEach((item) => {
-		if (item.type == "income") {
-			newBalance = newBalance + item.amount;
-		} else {
-			newBalance = newBalance - item.amount;
-		};
-	});
-
-	document.getElementById("balance").textContent = newBalance;
-	localStorage.setItem("balance", newBalance);
-}
-
-function addTransaction(date, longIntTime, type, article, amount, index = null) {
-	const newTransaction = {
-		id: index === null ? mTransactions.length : index,
-		longIntTime,
-		date,
-		type,
-		article,
-		amount: parseFloat(amount),
-	};
-
-	if (index == null) {
-		mTransactions.push(newTransaction);
-	} else {
-		mTransactions[index] = newTransaction;
-	}
-
-	addLocalStorageTransaction();
-}
-
-function addLocalStorageTransaction() {
-	localStorage.setItem("transactions", JSON.stringify(mTransactions));
-}
-
-function addLongPressListener(element) {
-	let longPressTimer;
-
-	element.addEventListener('mousedown', function (e) {
-		if (!longPressTimer) {
-			longPressTimer = setTimeout(() => {
-				showContextMenu(e, element, true); // Передаємо елемент для роботи з його даними
-			}, 500);
-		} // Час довгого натискання
-	});
-
-	element.addEventListener('mouseup', function () {
-		clearTimeout(longPressTimer);
-	});
-
-	element.addEventListener('mouseleave', function () {
-		clearTimeout(longPressTimer);
-	});
-
-	// Для мобільних пристроїв
-	element.addEventListener("touchstart", function (event) {
-		if (!longPressTimer) {
-			longPressTimer = setTimeout(() => {
-				showContextMenu(event);
-			}, 500);
-		}
-	}, { passive: false });
-
-	element.addEventListener("touchend", function () {
-		clearTimeout(longPressTimer);
-	});
-
-	element.addEventListener("touchmove", function () {
-		clearTimeout(longPressTimer);
-	});
-}
-
-async function showContextMenu(event, element, longTap = false) {
-	event.preventDefault();
-
-	//contextMenu.classList.remove('visually-hidden');
-	//contextMenu.classList.add('show');
-
-	if (event.touches && event.touches.length > 0) {
-		xPos = event.touches?.[0].pageX || event.clientX;
-		yPos = event.touches?.[0].pageY || event.clientY;
-	} else {
-		xPos = event.clientX;
-		yPos = event.clientY;
-	}
-
-	//console.log("*", xPos);
-	//console.log("*", yPos);
-
-	await getAttributeAsync(element, "data-type");
-
-	await nextFrame();
-
-	contextMenu.classList.remove('visually-hidden');
-	contextMenu.classList.add('show');
-
-	let coords = getInScreenCoords(event, contextMenu.offsetWidth, contextMenu.offsetHeight);
-
-	contextMenu.style.left = `${coords.x}px`;
-	contextMenu.style.top = `${coords.y}px`;
-
-	contextMenu.setAttribute('data-type-ctx', element.getAttribute('data-type'));
-	contextMenu.setAttribute('data-amount-ctx', element.getAttribute('data-amount'));
-	contextMenu.setAttribute('data-selected-id', element.getAttribute('data-id'));
-
-
-	//console.log(contextMenu.style.left);
-	//console.log(contextMenu.style.top);
-
-	isLongTap = longTap;
-	setTimeout(() => {
-		document.addEventListener('click', handleOutsideClick);
-	}, 50);
-}
-
-function nextFrame() {
-	return new Promise(requestAnimationFrame);
-}
-
-function getAttributeAsync(element, attribute) {
-	return new Promise((resolve, reject) => {
-
-		if (!element) return reject("Елемент не існує!");
-
-		try {
-			let attr = element.getAttribute(attribute);
-			if (attr !== null) {
-				resolve(attr);
-			} else {
-				reject(`Атрибут ${attribute} не знайдено!`);
-			}
-		} catch (error) {
-			reject(error);
-		}
-	});
-}
-
-function handleOutsideClick(event) {
-
-	if (isLongTap) {
-		isLongTap = false; // Скидаємо прапорець
-		return; // Вихід із функції, щоб не закривати меню
-	}
-
-	if (!contextMenu.contains(event.target)) {
-		closeContextMenu();
-		document.removeEventListener('click', handleOutsideClick);
-	}
-}
-
-function closeContextMenu() {
-	contextMenu.classList.remove('show');
-	contextMenu.classList.add('visually-hidden');
-}
-
-function getInScreenCoords(event, objWidth, objHeight, objPadding = 10) {
-
-	const screenWidth = window.innerWidth;
-	const screenHeight = window.innerHeight;
-
-
-	let xPos = 0;
-	let yPos = 0;
-
-	if (event.touches && event.touches.length > 0) {
-		xPos = event.touches?.[0].pageX || event.clientX;
-		yPos = event.touches?.[0].pageY || event.clientY;
-	} else {
-		xPos = event.clientX;
-		yPos = event.clientY;
-	}
-
-	if (xPos + objWidth + objPadding > screenWidth) {
-		xPos = screenWidth - objWidth - objPadding;
-	}
-
-	if (yPos + objHeight + objPadding > screenHeight) {
-		yPos = screenHeight - objHeight - objPadding;
-	}
-
-	xPos = Math.max(xPos, objPadding);
-	yPos = Math.max(yPos, objPadding);
-
-	yPos = yPos + window.scrollY;
-
-	//console.log("-", window.scrollY);
-	//console.log("-", window);
-
-	return { x: xPos, y: yPos };
-}
-
-
